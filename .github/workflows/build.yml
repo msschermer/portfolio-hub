@@ -28,5 +28,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/fullsnackenveloper/portfolio-hub:latest
-            ghcr.io/fullsnackenveloper/portfolio-hub:${{ github.sha }}
+            ghcr.io/msschermer/portfolio-hub:latest
+            ghcr.io/msschermer/portfolio-hub:${{ github.sha }}
