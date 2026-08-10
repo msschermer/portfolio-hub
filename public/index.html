@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mike Schermer — Solutions engineering and implementations</title>
+<meta name="description" content="Integrations, internal tooling, and infrastructure. Everything here runs in production and the code is public.">
+
+<meta property="og:title" content="Mike Schermer — Solutions engineering and implementations">
+<meta property="og:description" content="Integrations, internal tooling, and infrastructure. Everything here runs in production and the code is public.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://msschermer.us">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper:      #EDF1F6;
+    --paper-deep: #E2E8F0;
+    --card:       #FBFCFD;
+    --ink:        #16202C;
+    --ink-soft:   #4A5A6B;
+    --ink-faint:  #7B8A9A;
+    --rule:       #C6D0DC;
+    --rule-soft:  #DFE5EC;
+    --blue:       #0B5E8A;
+    --blue-wash:  #E3EDF4;
+    --live:       #1B7A4B;
+
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --gutter: clamp(1.25rem, 5vw, 4rem);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--sans);
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--gutter) 5rem;
+  }
+
+  a { color: inherit; }
+
+  /* Utility label used for every structural marker on the page */
+  .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- Masthead ---------- */
+
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 2.25rem 0 1.1rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .masthead-name {
+    font-family: var(--mono);
+    font-size: clamp(15px, 2vw, 17px);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .masthead-role {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .masthead-links {
+    display: flex;
+    gap: 1.25rem;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .masthead-links a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--rule);
+    transition: color .15s, border-color .15s;
+  }
+
+  .masthead-links a:hover,
+  .masthead-links a:focus-visible { color: var(--blue); border-color: var(--blue); }
+
+  /* ---------- Thesis ---------- */
+
+  .thesis {
+    padding: clamp(3rem, 8vw, 5.5rem) 0 clamp(2.5rem, 6vw, 4rem);
+    max-width: 30ch;
+  }
+
+  .thesis-statement {
+    font-family: var(--mono);
+    font-size: clamp(1.4rem, 4.4vw, 2.3rem);
+    font-weight: 400;
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .thesis-statement em {
+    font-style: normal;
+    color: var(--blue);
+  }
+
+  .thesis-note {
+    max-width: 52ch;
+    margin-top: 1.75rem;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Section heading ---------- */
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: .65rem;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 2rem;
+  }
+
+  .section-head .count {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+    margin-left: auto;
+  }
+
+  /* ---------- Tool cards ---------- */
+
+  .bench {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .tool {
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--ink);
+    padding: 1.5rem 1.5rem 1.25rem;
+    transition: border-color .18s, transform .18s;
+  }
+
+  .tool:hover { border-color: var(--blue); border-top-color: var(--blue); transform: translateY(-2px); }
+
+  .tool-status {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .9rem;
+  }
+
+  .pip {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--live);
+    box-shadow: 0 0 0 3px rgba(27,122,75,.14);
+    flex: none;
+  }
+
+  .pip.code-only { background: var(--ink-faint); box-shadow: 0 0 0 3px rgba(123,138,154,.14); }
+
+  .tool-name {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: .5rem;
+  }
+
+  .tool-line {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+
+  .spec {
+    border-top: 1px solid var(--rule-soft);
+    margin-top: auto;
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: .75rem;
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 13px;
+  }
+
+  .spec-row dt {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 2px;
+  }
+
+  .spec-row dd { color: var(--ink); }
+
+  /* The row that most portfolios leave out */
+  .spec-row.failure dd { color: var(--ink); }
+  .spec-row.failure dt { color: var(--blue); }
+
+  .tool-actions {
+    display: flex;
+    gap: .5rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: .55rem 1rem;
+    border: 1px solid var(--ink);
+    transition: background .15s, color .15s, border-color .15s;
+  }
+
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover, .btn-primary:focus-visible { background: var(--blue); border-color: var(--blue); }
+
+  .btn-ghost { color: var(--ink); }
+  .btn-ghost:hover, .btn-ghost:focus-visible { background: var(--blue-wash); border-color: var(--blue); color: var(--blue); }
+
+  /* ---------- Colophon ---------- */
+
+  .colophon {
+    margin-top: 4.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .colophon p {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+
+  .colophon a { color: var(--blue); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .colophon a:hover { border-color: var(--blue); }
+
+  /* ---------- Motion ---------- */
+
+  .rise { opacity: 0; transform: translateY(10px); animation: rise .5s ease forwards; }
+  .rise:nth-child(1) { animation-delay: .04s; }
+  .rise:nth-child(2) { animation-delay: .12s; }
+  .rise:nth-child(3) { animation-delay: .2s; }
+
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .rise { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 480px) {
+    .spec-row { grid-template-columns: 1fr; gap: .15rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <div class="masthead-name">Mike Schermer</div>
+      <div class="masthead-role">Solutions engineering, integrations, and implementations</div>
+    </div>
+    <nav class="masthead-links" aria-label="Elsewhere">
+      <a href="https://github.com/Fullsnackenveloper">GitHub</a>
+      <a href="https://www.linkedin.com/in/mikeschermer">LinkedIn</a>
+    </nav>
+  </header>
+
+  <section class="thesis">
+    <h1 class="thesis-statement">
+      I build the tooling that sits <em>between systems</em> and keeps the connection working.
+    </h1>
+    <p class="thesis-note">
+      Integrations, internal tooling, and the infrastructure underneath them. Everything below runs
+      in production on a server I set up and maintain, deploys from its own pipeline, and is public
+      to read.
+    </p>
+  </section>
+
+  <section aria-labelledby="bench-heading">
+    <div class="section-head">
+      <h2 class="label" id="bench-heading">On the bench</h2>
+      <span class="count">3 tools</span>
+    </div>
+
+    <div class="bench">
+
+      <article class="tool rise">
+        <div class="tool-status">
+          <span class="pip" aria-hidden="true"></span>
+          <span class="label">Running</span>
+        </div>
+        <h3 class="tool-name">PageSpeed Monitor</h3>
+        <p class="tool-line">
+          Watches performance scores across a list of sites on a schedule and flags any that drop
+          below threshold, so a regression gets noticed before a client reports it.
+        </p>
+        <dl class="spec">
+          <div class="spec-row">
+            <dt>Built with</dt>
+            <dd>Node, Express, SQLite</dd>
+          </div>
+          <div class="spec-row">
+            <dt>Runs as</dt>
+            <dd>Scheduled scan every six hours, unattended</dd>
+          </div>
+          <div class="spec-row failure">
+            <dt>When it fails</dt>
+            <dd>Retries with backoff, records why each check failed, and shows the reason in the dashboard</dd>
+          </div>
+        </dl>
+        <div class="tool-actions">
+          <a class="btn btn-primary" href="https://psi.msschermer.us">Open the dashboard</a>
+          <a class="btn btn-ghost" href="https://github.com/Fullsnackenveloper/psi-monitor">Read the code</a>
+        </div>
+      </article>
+
+      <article class="tool rise">
+        <div class="tool-status">
+          <span class="pip" aria-hidden="true"></span>
+          <span class="label">Running</span>
+        </div>
+        <h3 class="tool-name">Form to CRM Bridge</h3>
+        <p class="tool-line">
+          Delivers website form submissions into whichever CRM a business already uses. One shared
+          core, with each platform reduced to a small adapter.
+        </p>
+        <dl class="spec">
+          <div class="spec-row">
+            <dt>Built with</dt>
+            <dd>PHP, WordPress, Neos and Lead Docket and HubSpot APIs</dd>
+          </div>
+          <div class="spec-row">
+            <dt>Runs as</dt>
+            <dd>A plugin, firing on every form submission</dd>
+          </div>
+          <div class="spec-row failure">
+            <dt>When it fails</dt>
+            <dd>Never blocks the submission, keeps the payload so the lead is recoverable, and separates what to retry from what needs a person</dd>
+          </div>
+        </dl>
+        <div class="tool-actions">
+          <a class="btn btn-primary" href="https://bridge-demo.msschermer.us">Try the live demo</a>
+          <a class="btn btn-ghost" href="https://github.com/Fullsnackenveloper/form-crm-bridge">Read the code</a>
+        </div>
+      </article>
+
+      <article class="tool rise">
+        <div class="tool-status">
+          <span class="pip code-only" aria-hidden="true"></span>
+          <span class="label">Infrastructure</span>
+        </div>
+        <h3 class="tool-name">The server this runs on</h3>
+        <p class="tool-line">
+          The deployment setup behind the other two tools. Version controlled, so the server can be
+          rebuilt from the repository rather than from memory.
+        </p>
+        <dl class="spec">
+          <div class="spec-row">
+            <dt>Built with</dt>
+            <dd>Docker Compose, Caddy, GitHub Actions</dd>
+          </div>
+          <div class="spec-row">
+            <dt>Runs as</dt>
+            <dd>Push to main, image builds itself, server pulls it</dd>
+          </div>
+          <div class="spec-row failure">
+            <dt>When it fails</dt>
+            <dd>Containers restart on their own, certificates renew without intervention, and no credential is ever committed</dd>
+          </div>
+        </dl>
+        <div class="tool-actions">
+          <a class="btn btn-ghost" href="https://github.com/Fullsnackenveloper/portfolio-infra">Read the code</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p>
+      Built and maintained by Mike Schermer. If you want to talk about a role or an integration
+      problem, <a href="https://www.linkedin.com/in/mikeschermer">reach me on LinkedIn</a>.
+    </p>
+    <p class="label">msschermer.us</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
