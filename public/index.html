@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Mike Schermer — Solutions engineering, integrations, and implementations</title>
+<title>Mike Schermer | Solutions engineering, integrations, and implementations</title>
 <meta name="description" content="Integrations, internal tooling, and infrastructure built by Mike Schermer. Everything here runs in production and the source is public.">
 <link rel="canonical" href="https://msschermer.us/">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://msschermer.us/">
 <meta property="og:site_name" content="Mike Schermer">
-<meta property="og:title" content="Mike Schermer — Solutions engineering, integrations, and implementations">
+<meta property="og:title" content="Mike Schermer | Solutions engineering, integrations, and implementations">
 <meta property="og:description" content="Integrations, internal tooling, and infrastructure. Everything here runs in production and the source is public.">
 <meta property="og:image" content="https://msschermer.us/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
 <meta property="og:image:alt" content="Mike Schermer. I build the tooling that sits between systems and keeps the connection working.">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mike Schermer — Solutions engineering, integrations, and implementations">
+<meta name="twitter:title" content="Mike Schermer | Solutions engineering, integrations, and implementations">
 <meta name="twitter:description" content="Integrations, internal tooling, and infrastructure. Everything here runs in production and the source is public.">
 <meta name="twitter:image" content="https://msschermer.us/og-image.png">
 
@@ -50,11 +50,14 @@
       ],
       "knowsAbout": [
         "Systems integration",
-        "CRM integration",
-        "Solutions engineering",
-        "Software implementation",
-        "Web performance",
-        "DevOps"
+        "Data integration",
+        "REST API design",
+        "Web Content Accessibility Guidelines",
+        "Performance Optimization",
+        "Technical SEO",
+        "Application security",
+        "Containerized deployment",
+        "Continuous integration and delivery"
       ]
     },
     {
@@ -65,27 +68,107 @@
       "publisher": { "@id": "https://msschermer.us/#person" },
       "inLanguage": "en-US"
     },
+
     {
-      "@type": "SoftwareApplication",
+      "@type": "WebApplication",
+      "@id": "https://msschermer.us/#psi-monitor",
       "name": "PageSpeed Monitor",
       "applicationCategory": "DeveloperApplication",
       "url": "https://psi.msschermer.us",
-      "codeRepository": "https://github.com/msschermer/psi-monitor",
       "author": { "@id": "https://msschermer.us/#person" },
       "description": "Scheduled web performance monitoring with score history and alerting.",
       "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
     },
     {
+      "@type": "SoftwareSourceCode",
+      "name": "PageSpeed Monitor source",
+      "codeRepository": "https://github.com/msschermer/psi-monitor",
+      "programmingLanguage": ["JavaScript", "SQL"],
+      "runtimePlatform": "Node.js",
+      "author": { "@id": "https://msschermer.us/#person" },
+      "targetProduct": { "@id": "https://msschermer.us/#psi-monitor" }
+    },
+
+    {
       "@type": "SoftwareApplication",
+      "@id": "https://msschermer.us/#form-crm-bridge",
       "name": "Form to CRM Bridge",
       "applicationCategory": "DeveloperApplication",
       "url": "https://bridge-demo.msschermer.us",
-      "codeRepository": "https://github.com/msschermer/form-crm-bridge",
       "author": { "@id": "https://msschermer.us/#person" },
       "description": "WordPress plugin that delivers website form submissions into a CRM through pluggable platform adapters.",
       "operatingSystem": "WordPress",
+      "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Form to CRM Bridge source",
+      "codeRepository": "https://github.com/msschermer/form-crm-bridge",
+      "programmingLanguage": "PHP",
+      "runtimePlatform": "WordPress",
+      "author": { "@id": "https://msschermer.us/#person" },
+      "targetProduct": { "@id": "https://msschermer.us/#form-crm-bridge" }
+    },
+
+    {
+      "@type": "WebApplication",
+      "@id": "https://msschermer.us/#preflight",
+      "name": "Preflight",
+      "applicationCategory": "DeveloperApplication",
+      "url": "https://preflight.msschermer.us",
+      "author": { "@id": "https://msschermer.us/#person" },
+      "description": "Pre-launch checker that runs certificate, redirect, crawlability and indexing checks against a live URL on demand.",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Preflight source",
+      "codeRepository": "https://github.com/msschermer/preflight",
+      "programmingLanguage": "JavaScript",
+      "runtimePlatform": "Node.js",
+      "author": { "@id": "https://msschermer.us/#person" },
+      "targetProduct": { "@id": "https://msschermer.us/#preflight" }
+    },
+
+    {
+      "@type": "WebApplication",
+      "@id": "https://msschermer.us/#wcag-translator",
+      "name": "WCAG Translator",
+      "applicationCategory": "DeveloperApplication",
+      "url": "https://wcag-translator.msschermer.us",
+      "author": { "@id": "https://msschermer.us/#person" },
+      "description": "API that translates plain engineering language, automated checker rule ids and whole scanner reports into WCAG success criteria, techniques and terminology.",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "WCAG Translator source",
+      "codeRepository": "https://github.com/msschermer/wcag-translator",
+      "programmingLanguage": "JavaScript",
+      "runtimePlatform": "Node.js",
+      "license": "https://spdx.org/licenses/MIT.html",
+      "author": { "@id": "https://msschermer.us/#person" },
+      "targetProduct": { "@id": "https://msschermer.us/#wcag-translator" }
+    },
+
+    {
+      "@type": "SoftwareSourceCode",
+      "name": "Portfolio infrastructure",
+      "description": "Docker Compose, Caddy and GitHub Actions configuration for the server the other tools run on.",
+      "codeRepository": "https://github.com/msschermer/portfolio-infra",
+      "programmingLanguage": ["YAML", "Dockerfile"],
+      "runtimePlatform": "Docker",
+      "author": { "@id": "https://msschermer.us/#person" }
     }
   ]
 }
@@ -375,6 +458,8 @@
   .rise:nth-child(1) { animation-delay: .04s; }
   .rise:nth-child(2) { animation-delay: .12s; }
   .rise:nth-child(3) { animation-delay: .2s; }
+  .rise:nth-child(4) { animation-delay: .28s; }
+  .rise:nth-child(5) { animation-delay: .36s; }
 
   @keyframes rise { to { opacity: 1; transform: none; } }
 
@@ -425,7 +510,7 @@
   <section aria-labelledby="bench-heading">
     <div class="section-head">
       <h2 class="label" id="bench-heading">On the bench</h2>
-      <span class="label count">4 tools</span>
+      <span class="label count">5 tools</span>
     </div>
 
     <div class="bench">
@@ -521,13 +606,42 @@
 
       <article class="tool rise">
         <div class="tool-status">
+          <span class="pip" aria-hidden="true"></span>
+          <span class="label">Running</span>
+        </div>
+        <h3 class="tool-name">WCAG Translator</h3>
+        <p class="tool-line">
+          Describe an accessibility problem the way a developer would, or paste a rule id or a whole scanner report, and it names the WCAG success criteria behind the finding along with the techniques for fixing it.
+        </p>
+        <dl class="spec">
+          <div class="spec-row">
+            <dt>Built with</dt>
+            <dd>Node, Express, the official W3C WCAG data</dd>
+          </div>
+          <div class="spec-row">
+            <dt>Runs as</dt>
+            <dd>An API, answering on demand, rebuilt monthly as W3C republish</dd>
+          </div>
+          <div class="spec-row failure">
+            <dt>When it fails</dt>
+            <dd>Halts the build on an unexpected W3C structure rather than shipping an empty index, keeps serving the last good data if w3.org is unreachable, and labels weak matches as leads rather than answers</dd>
+          </div>
+        </dl>
+        <div class="tool-actions">
+          <a class="btn btn-primary" href="https://wcag-translator.msschermer.us">Open the console</a>
+          <a class="btn btn-ghost" href="https://github.com/msschermer/wcag-translator">Read the code</a>
+        </div>
+      </article>
+
+      <article class="tool rise">
+        <div class="tool-status">
           <span class="pip code-only" aria-hidden="true"></span>
           <span class="label">Infrastructure</span>
         </div>
         <h3 class="tool-name">The server this runs on</h3>
         <p class="tool-line">
-          The deployment setup behind the other two tools. Version controlled, so the server can be
-          rebuilt from the repository rather than from memory.
+          The deployment setup behind all the tools hosted on this environment. Version controlled, so the
+          server can be rebuilt from the repository rather than from memory.
         </p>
         <dl class="spec">
           <div class="spec-row">
