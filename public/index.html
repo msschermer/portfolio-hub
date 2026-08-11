@@ -356,6 +356,12 @@
     margin-bottom: .85rem;
   }
 
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    margin: -1px; padding: 0; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap;
+  }
+
   .pip {
     width: 7px; height: 7px; border-radius: 50%;
     background: var(--live);
@@ -628,8 +634,8 @@
           </div>
         </dl>
         <div class="tool-actions">
-          <a class="btn btn-primary" href="https://wcag-translator.msschermer.us">Open the console</a>
-          <a class="btn btn-ghost" href="https://github.com/msschermer/wcag-translator">Read the code</a>
+          <a class="btn btn-primary" href="https://wcag-translator.msschermer.us" target="_blank" rel="noopener">Open the console<span class="visually-hidden"> (opens in a new tab)</span></a>
+          <a class="btn btn-ghost" href="https://github.com/msschermer/wcag-translator" target="_blank" rel="noopener">Read the code</a>
         </div>
       </article>
 
