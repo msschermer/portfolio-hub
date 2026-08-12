@@ -216,9 +216,15 @@
     --gutter: clamp(1.25rem, 5vw, 4rem);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-  html { -webkit-text-size-adjust: 100%; }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
 
   body {
     font-family: var(--sans);
@@ -238,7 +244,9 @@
     padding: 0 var(--gutter) 4rem;
   }
 
-  a { color: inherit; }
+  a {
+    color: inherit;
+  }
 
   .label {
     font-family: var(--mono);
@@ -258,7 +266,12 @@
     font-family: var(--mono);
     font-size: 12px;
   }
-  .skip:focus { left: 1rem; top: 1rem; z-index: 10; }
+
+  .skip:focus {
+    left: 1rem;
+    top: 1rem;
+    z-index: 10;
+  }
 
   /* ---------- Masthead ---------- */
 
@@ -303,7 +316,10 @@
   }
 
   .masthead-links a:hover,
-  .masthead-links a:focus-visible { color: var(--blue); border-color: var(--blue); }
+  .masthead-links a:focus-visible {
+    color: var(--blue);
+    border-color: var(--blue);
+  }
 
   /* ---------- Thesis ---------- */
 
@@ -336,7 +352,11 @@
   }
 
   @media (max-width: 760px) {
-    .thesis { grid-template-columns: 1fr; gap: 1.25rem; align-items: start; }
+    .thesis {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
   }
 
   /* ---------- Section heading ---------- */
@@ -350,13 +370,15 @@
     margin-bottom: 1.5rem;
   }
 
-  .section-head .count { margin-left: auto; }
+  .section-head .count {
+    margin-left: auto;
+  }
 
   /* ---------- Tool cards ---------- */
 
   .bench {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
     gap: 1.25rem;
   }
 
@@ -370,7 +392,11 @@
     transition: border-color .18s, transform .18s;
   }
 
-  .tool:hover { border-color: var(--blue); border-top-color: var(--blue); transform: translateY(-2px); }
+  .tool:hover {
+    border-color: var(--blue);
+    border-top-color: var(--blue);
+    transform: translateY(-2px);
+  }
 
   .tool-status {
     display: flex;
@@ -380,19 +406,29 @@
   }
 
   .visually-hidden {
-    position: absolute; width: 1px; height: 1px;
-    margin: -1px; padding: 0; overflow: hidden;
-    clip-path: inset(50%); white-space: nowrap;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .pip {
-    width: 7px; height: 7px; border-radius: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
     background: var(--live);
     box-shadow: 0 0 0 3px rgba(27,122,75,.14);
     flex: none;
   }
 
-  .pip.code-only { background: var(--ink-faint); box-shadow: 0 0 0 3px rgba(123,138,154,.14); }
+  .pip.code-only {
+    background: var(--ink-faint);
+    box-shadow: 0 0 0 3px rgba(123,138,154,.14);
+  }
 
   .tool-name {
     font-family: var(--mono);
@@ -403,6 +439,7 @@
   }
 
   /* Fixed block so every spec table starts on the same line across cards */
+
   .tool-line {
     font-size: 14.5px;
     color: var(--ink-soft);
@@ -432,7 +469,9 @@
     padding-top: 2px;
   }
 
-  .spec-row.failure dt { color: var(--blue); }
+  .spec-row.failure dt {
+    color: var(--blue);
+  }
 
   .tool-actions {
     display: flex;
@@ -444,20 +483,37 @@
 
   .btn {
     font-family: var(--mono);
-    font-size: 11.5px;
-    letter-spacing: 0.08em;
+    font-size: 11px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: .55rem 1rem;
+    white-space: nowrap;
+    padding: .55rem .7rem;
     border: 1px solid var(--ink);
     transition: background .15s, color .15s, border-color .15s;
   }
 
-  .btn-primary { background: var(--ink); color: var(--paper); }
-  .btn-primary:hover, .btn-primary:focus-visible { background: var(--blue); border-color: var(--blue); }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
 
-  .btn-ghost { color: var(--ink); }
-  .btn-ghost:hover, .btn-ghost:focus-visible { background: var(--blue-wash); border-color: var(--blue); color: var(--blue); }
+  .btn-primary:hover,
+  .btn-primary:focus-visible {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+
+  .btn-ghost {
+    color: var(--ink);
+  }
+
+  .btn-ghost:hover,
+  .btn-ghost:focus-visible {
+    background: var(--blue-wash);
+    border-color: var(--blue);
+    color: var(--blue);
+  }
 
   /* ---------- Colophon ---------- */
 
@@ -478,33 +534,72 @@
     max-width: 46ch;
   }
 
-  .colophon a { color: var(--blue); text-decoration: none; border-bottom: 1px solid var(--rule); }
-  .colophon a:hover { border-color: var(--blue); }
+  .colophon a {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .colophon a:hover {
+    border-color: var(--blue);
+  }
 
   /* ---------- Motion ---------- */
 
-  .rise { opacity: 0; transform: translateY(10px); animation: rise .5s ease forwards; }
+  .rise {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rise .5s ease forwards;
+  }
+
   .rise:nth-child(1) { animation-delay: .04s; }
   .rise:nth-child(2) { animation-delay: .12s; }
-  .rise:nth-child(3) { animation-delay: .2s; }
+  .rise:nth-child(3) { animation-delay: .20s; }
   .rise:nth-child(4) { animation-delay: .28s; }
   .rise:nth-child(5) { animation-delay: .36s; }
+  .rise:nth-child(6) { animation-delay: .44s; }
 
-  @keyframes rise { to { opacity: 1; transform: none; } }
+  @keyframes rise {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 
-  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+  :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .rise { opacity: 1; transform: none; }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    .rise {
+      opacity: 1;
+      transform: none;
+    }
   }
+
+  /* Remove fixed card-description height once cards stack more vertically */
 
   @media (max-width: 700px) {
-    .tool-line { min-height: 0; }
+    .tool-line {
+      min-height: 0;
+    }
   }
 
+  /* Stack spec labels above their values on narrow phones */
+
   @media (max-width: 480px) {
-    .spec-row { grid-template-columns: 1fr; gap: .15rem; }
+    .spec-row {
+      grid-template-columns: 1fr;
+      gap: .15rem;
+    }
   }
 </style>
 </head>
