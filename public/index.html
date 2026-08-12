@@ -70,6 +70,29 @@
     },
 
     {
+  "@type": "WebApplication",
+  "@id": "https://msschermer.us/#meta-state-validator",
+  "name": "Meta State Validator",
+  "applicationCategory": "DeveloperApplication",
+  "url": "https://meta-state.msschermer.us",
+  "author": { "@id": "https://msschermer.us/#person" },
+  "description": "Developer tool for inspecting page metadata, structured data, crawler directives, sitemaps, llms.txt, and conflicting published signals.",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+},
+{
+  "@type": "SoftwareSourceCode",
+  "name": "Meta State Validator source",
+  "codeRepository": "https://github.com/msschermer/meta-state-validator",
+  "programmingLanguage": "JavaScript",
+  "runtimePlatform": "Node.js",
+  "author": { "@id": "https://msschermer.us/#person" },
+  "targetProduct": { "@id": "https://msschermer.us/#meta-state-validator" }
+},
+
+    {
       "@type": "WebApplication",
       "@id": "https://msschermer.us/#psi-monitor",
       "name": "PageSpeed Monitor",
@@ -516,11 +539,41 @@
   <section aria-labelledby="bench-heading">
     <div class="section-head">
       <h2 class="label" id="bench-heading">On the bench</h2>
-      <span class="label count">5 tools</span>
+      <span class="label count">6 tools</span>
     </div>
 
     <div class="bench">
 
+<article class="tool rise">
+  <div class="tool-status">
+    <span class="pip" aria-hidden="true"></span>
+    <span class="label">Running</span>
+  </div>
+  <h3 class="tool-name">Meta State Validator</h3>
+  <p class="tool-line">
+    Inspects the metadata a public site publishes: page metadata, structured data,
+    crawler directives, sitemaps, and llms.txt, with conflicts surfaced across sources.
+  </p>
+  <dl class="spec">
+    <div class="spec-row">
+      <dt>Built with</dt>
+      <dd>Node, Express, cheerio</dd>
+    </div>
+    <div class="spec-row">
+      <dt>Runs as</dt>
+      <dd>On-demand inspection of one public URL and its supporting files</dd>
+    </div>
+    <div class="spec-row failure">
+      <dt>When it fails</dt>
+      <dd>Refuses private and internal targets on every redirect hop, caps fetches by time and size, and returns partial results when supporting files cannot be read</dd>
+    </div>
+  </dl>
+  <div class="tool-actions">
+    <a class="btn btn-primary" href="https://meta-state.msschermer.us">Open the inspector</a>
+    <a class="btn btn-ghost" href="https://github.com/msschermer/meta-state-validator">Read the code</a>
+  </div>
+</article>
+              
       <article class="tool rise">
         <div class="tool-status">
           <span class="pip" aria-hidden="true"></span>
