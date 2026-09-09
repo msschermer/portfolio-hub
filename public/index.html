@@ -1,40 +1,772 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head><meta name="author" content="Mike Schermer">
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Mike Schermer | Solutions engineering, integrations, and implementations</title>
-<meta name="description" content="Integrations, internal tooling, and infrastructure built by Mike Schermer. Everything here runs in production and the source is public.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mike Schermer — Solutions engineering &amp; integrations</title>
+<meta name="description" content="Mike Schermer builds integrations, developer tools, and the infrastructure behind them. Explore project case studies, interactive examples, and public source code.">
 <link rel="canonical" href="https://msschermer.us/">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="author" content="Mike Schermer">
-<meta name="theme-color" content="#16202C">
+<meta name="theme-color" content="#171918">
+<meta property="og:type" content="website"><meta property="og:url" content="https://msschermer.us/"><meta property="og:site_name" content="Mike Schermer"><meta property="og:title" content="Mike Schermer — Solutions engineering &amp; integrations"><meta property="og:description" content="Integrations, developer tools, and the engineering decisions behind them. Explore the work and the source."><meta property="og:image" content="https://msschermer.us/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Mike Schermer. I build the tooling that sits between systems and keeps the connection working.">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Mike Schermer — Solutions engineering &amp; integrations"><meta name="twitter:description" content="Integrations, developer tools, and the engineering decisions behind them. Explore the work and the source."><meta name="twitter:image" content="https://msschermer.us/og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2232%22%20fill%3D%22%23ff714d%22%2F%3E%3Cpath%20d%3D%22M15%2044V21l17%2016%2017-16v23%22%20fill%3D%22none%22%20stroke%3D%22%23171918%22%20stroke-width%3D%225%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<style>
+:root { --ink:#171918;--paper:#f3f2eb;--muted:#a5aaa5;--orange:#ff714d;--line:#3b3e39;--mono:'Cascadia Code','SFMono-Regular',Consolas,monospace;--sans:Arial,Helvetica,sans-serif;--serif:Georgia,'Times New Roman',serif;--pad:clamp(22px,5.5vw,88px) }
+* { box-sizing:border-box }
+html { scroll-behavior:smooth;scroll-padding-top:32px }
+body { margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:16px;line-height:1.6 }
+a { color:inherit;text-decoration:none }
+button { font:inherit }
+button,a,summary { -webkit-tap-highlight-color:transparent }
+button:focus-visible,a:focus-visible,summary:focus-visible { outline:3px solid var(--focus);outline-offset:6px }
+::selection { background:var(--orange);color:var(--ink) }
+.wrap { max-width:1600px;margin:auto;padding-inline:var(--pad) }
+.mono,.eyebrow { font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase }
+.skip { position:fixed;top:-100px;left:20px;z-index:10;background:var(--paper);color:var(--ink);padding:12px }
+.skip:focus { top:12px }
+.nav { display:flex;align-items:center;justify-content:space-between;padding-block:28px;border-bottom:1px solid var(--line);gap:24px }
+.brand { display:flex;gap:12px;align-items:center;font-weight:700;font-size:1.05rem;letter-spacing:-.03em }
+.mark { background:var(--orange);color:var(--ink);width:34px;height:34px;display:grid;place-items:center;font-family:var(--serif);font-size:23px;font-style:italic;border-radius:50% }
+.nav-links { display:flex;gap:34px;font-size:.875rem }
+.nav-links a:hover { color:var(--orange) }
+.nav-contact { border-bottom:1px solid #787d75;padding-bottom:3px }
+.hero { padding-top:64px;padding-bottom:62px }
+.hero-top { display:flex;justify-content:space-between;gap:20px;color:var(--muted) }
+.signal { display:inline-flex;align-items:center;gap:10px }
+.dot { width:7px;height:7px;display:inline-block;border-radius:50%;background:var(--orange) }
+h1 { font-size:clamp(64px,8.6vw,138px);font-weight:400;letter-spacing:-.072em;line-height:.98;margin:46px 0 38px;max-width:1200px }
+h1 em { font-family:var(--serif);font-weight:400;color:var(--orange);letter-spacing:-.075em }
+.hero-bottom { display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:end }
+.intro { max-width:440px;color:#bdc2bc;font-size:1.125rem;margin:0 0 25px }
+.button { display:inline-flex;align-items:center;justify-content:space-between;gap:34px;padding:13px 20px;font-size:.875rem;font-weight:600;background:var(--orange);color:var(--ink);border:1px solid transparent;cursor:pointer;border-radius:3px;transition:background .2s,transform .2s }
+.button:hover { background:#ff967b;transform:translateY(-2px) }
+.work { background:var(--paper);color:var(--ink);padding-block:76px 90px }
+.section-top { display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:40px }
+.section-top h2,.about h2 { font-size:clamp(40px,5vw,72px);line-height:1.1;font-weight:400;letter-spacing:-.06em;margin:14px 0 0 }
+.section-top h2 em,.about h2 em { font-family:var(--serif);font-weight:400 }
+.section-top p { max-width:300px;color:#555b52;margin:0 }
+.project-visual { background:#e4e6dc;border:1px solid #d1d5c8;border-radius:5px;padding:32px;min-height:350px;display:flex;flex-direction:column;justify-content:center;overflow:hidden }
+.project-copy { padding:16px 0 12px clamp(26px,4vw,66px);display:flex;flex-direction:column;align-items:start }
+.project-copy h3 { font-size:clamp(29px,3vw,43px);font-weight:400;line-height:1.1;letter-spacing:-.05em;margin:0 0 18px }
+.project-copy p { margin:0 0 20px;color:#555d50;max-width:430px }
+.tags { display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px }
+.tag { font-family:var(--mono);font-size:.75rem;border:1px solid #c2c7b9;padding:3px 9px;border-radius:3px;color:#59624f }
+.text-link { border-bottom:1px solid #858d7a;padding-bottom:3px }
+.text-link:hover { color:#aa351c;border-color:#aa351c }
+.project-copy details { width:100%;font-size:.875rem;color:#505b49;border-top:1px solid #c9cdbf;padding:12px 0 0 }
+.project-copy summary { cursor:pointer;color:var(--ink) }
+.project-copy details p { margin:12px 0 0;font-size:.875rem }
+.small-heading { display:flex;justify-content:space-between;align-items:center;border-top:1px solid #babdb3;padding-top:24px;margin-bottom:25px }
+.small-heading h3 { font-weight:400;font-size:1.5rem;letter-spacing:-.04em;margin:0 }
+.tool-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:26px }
+.tool { border:1px solid #c7cbbe;border-radius:4px;padding:26px;display:flex;flex-direction:column }
+.tool h4 { font-size:1.3rem;letter-spacing:-.035em;margin:0 0 12px;font-weight:500 }
+.tool p { font-size:1rem;color:#555d50;margin:0 0 25px }
+.tool details { font-size:.875rem;color:#555d50;margin-bottom:12px }
+.tool summary { cursor:pointer }
+.tool details p { margin-top:10px;font-size:.875rem }
+.infrastructure { padding-block:75px;border-bottom:1px solid var(--line) }
+.infra-grid { display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center }
+.infrastructure h2 { font-weight:400;letter-spacing:-.05em;font-size:clamp(34px,4vw,56px);line-height:1.1;margin:20px 0 }
+.infrastructure p { color:#b3baae;max-width:440px;margin-bottom:25px }
+.about { padding-block:80px;display:grid;grid-template-columns:1fr 1fr;gap:70px }
+.about-copy p { color:#bbc1b5;margin:0 0 20px;max-width:490px }
+.about .eyebrow { color:var(--muted) }
+.about h2 { font-size:clamp(38px,4.5vw,62px) }
+.about h2 em { color:var(--orange) }
+.contact { background:var(--orange);color:var(--ink);padding-block:64px }
+.contact-top { display:flex;align-items:center;justify-content:space-between;gap:40px }
+.contact h2 { font-weight:400;font-size:clamp(48px,6.5vw,96px);letter-spacing:-.065em;line-height:1;margin:20px 0 0 }
+.contact-link { width:100px;height:100px;border:1px solid #733621;border-radius:50%;display:grid;place-items:center;font-size:45px;flex-shrink:0;transition:background .2s,transform .2s }
+.contact-link:hover { background:var(--ink);color:var(--orange) }
+.contact-bottom { display:flex;justify-content:space-between;gap:25px;align-items:center;margin-top:45px }
+.contact-bottom p { max-width:470px;margin:0 }
+.contact-bottom a { white-space:nowrap;border-bottom:1px solid #773d2b }
+.footer { padding-block:24px;display:flex;justify-content:space-between;gap:20px;color:#aab0a5;font-size:.75rem }
+.footer a:hover { color:var(--paper) }
+@media(min-width:1500px) {
+  .hero { padding-top:80px;padding-bottom:80px }
+}
+@media(max-width:900px) {
+  .hero-top>span:last-child { display:none }
+  .hero-bottom { gap:25px }
+  .project-visual { padding:20px;min-height:300px }
+  .tool-grid { gap:14px }
+  .tool { padding:20px }
+  .infra-grid,.about { gap:38px }
+}
+@media(max-width:650px) {
+  .nav { padding-block:20px }
+  .nav-links { gap:20px }
+  .nav-links a:nth-child(2) { display:none }
+  .hero { padding-top:35px;padding-bottom:35px }
+  h1 { font-size:clamp(57px,12.5vw,82px);margin-block:32px }
+  .hero-bottom { grid-template-columns:1fr;gap:30px }
+  .intro { font-size:1rem;max-width:360px }
+  .work { padding-block:50px }
+  .section-top { align-items:start;flex-direction:column;gap:20px;margin-bottom:30px }
+  .section-top p { max-width:380px }
+  .project-copy { padding:4px 0 }
+  .project-visual { min-height:300px }
+  .project-copy h3 { font-size:34px }
+  .tool-grid { grid-template-columns:1fr }
+  .tool { padding:24px }
+  .small-heading { gap:12px;align-items:start }
+  .small-heading .mono { max-width:100px;text-align:right }
+  .infra-grid,.about { grid-template-columns:1fr;gap:30px }
+  .infrastructure { padding-block:48px }
+  .about { padding-block:50px }
+  .contact { padding-block:45px }
+  .contact-top { gap:15px }
+  .contact-link { width:66px;height:66px;font-size:32px }
+  .contact-bottom { align-items:start;flex-direction:column;gap:20px;margin-top:30px }
+  .footer { flex-wrap:wrap }
+  .intro { margin-bottom:20px }
+}
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto }
+  *,*::before,*::after { transition:none!important;animation:none!important }
+}
+:root { --focus: #f3f2eb; }
+:where(a,button,summary):focus-visible { outline: 3px solid var(--focus); outline-offset: 5px; }
+[hidden] { display: none !important; }
+button,a,summary { touch-action: manipulation; }
+h1,h2,h3,h4 { text-wrap: balance; }
+.sr-only { position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0; }
+.nav-links { gap: 26px; }
+.nav-links a,.brand { display:inline-flex;align-items:center;min-height:44px; }
+.nav-contact { border:0; }
+.hero { padding-top:54px;padding-bottom:40px; }
+h1 { margin-block:36px 38px; }
+.hero-bottom { align-items:start;gap:clamp(35px,7vw,100px); }
+.intro { max-width:470px; }
+.intro strong { color:var(--paper);font-weight:400; }
+.hero-actions { display:flex;align-items:center;flex-wrap:wrap;gap:24px; }
+.button { min-height:48px; }
+.text-link { display:inline-flex;align-items:center;min-height:44px;gap:10px;border:0;text-decoration:underline;text-underline-offset:6px;text-decoration-color:#8b957f; }
+.text-link:hover { color:var(--orange);text-decoration-color:currentColor; }
+.work-index { border-top:1px solid #6b7460; }
+.index-heading { display:flex;justify-content:space-between;gap:15px;padding-block:11px 7px;color:var(--muted); }
+.index-link { display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:center;padding-block:12px;border-bottom:1px solid var(--line);font-size:.875rem; }
+.index-num { font-family:var(--mono);font-size:.75rem;color:var(--orange); }
+.index-link:hover { color:var(--orange); }
+.evidence-strip { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;border-top:1px solid var(--line);padding-top:23px;margin-top:40px; }
+.evidence-item { font-size:.875rem;color:var(--muted); }
+.evidence-item strong { font-weight:400;color:var(--paper);display:block; }
+.evidence-item::before { content:'+';float:left;margin-right:12px;color:var(--orange); }
+.work { --focus:#171918;--muted:#59624f;color-scheme:light; }
+.work .text-link:hover { color:#8d2d17; }
+.work .button { background:var(--ink);color:var(--paper); }
+.work .button:hover { background:#3c4832; }
+.section-top { margin-bottom:45px; }
+.project { border-top:1px solid #9da78f;padding-top:24px;padding-bottom:48px;scroll-margin-top:25px; }
+.project-heading { display:flex;justify-content:space-between;gap:20px;color:#536048;margin-bottom:23px; }
+.project-no { color:#6e775f;margin-right:15px; }
+.project-layout { display:grid;grid-template-columns:1.13fr 1fr;gap:clamp(28px,5vw,75px);align-items:start; }
+.project-copy { padding:0;display:block; }
+.project-copy h3 { font-size:clamp(2rem,3.2vw,3rem);line-height:1.1; }
+.project-copy .project-deck { font-size:1.2rem;line-height:1.45;color:#30392b; }
+.project-copy>p { max-width:none; }
+.project-fact { display:grid;grid-template-columns:70px 1fr;gap:14px;font-size:.875rem;border-top:1px solid #c4cabb;padding-block:13px;margin:22px 0 0; }
+.project-fact dt { color:#56604d; }
+.project-fact dd { margin:0; }
+.tags { margin-top:17px;margin-bottom:0; }
+.tag { font-size:.75rem; }
+.project-actions { display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin-top:21px; }
+.project-visual { display:block;min-height:0;margin:0;padding:25px;background:#e6e9df;border-color:#cdd5c0;overflow:visible; }
+.visual-heading { display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:19px; }
+.visual-heading h4 { font-size:.875rem;font-weight:600;letter-spacing:-.015em;line-height:1.5;margin:0; }
+.visual-heading .mono { color:#59664e;font-size:.75rem;letter-spacing:.025em;text-transform:none; }
+.sample-label { font: .75rem/1.6 var(--mono);color:#59644f;margin-top:17px; }
+.segmented { display:flex;gap:5px;margin-bottom:19px; }
+.segment { min-height:44px;flex:1;padding:7px 8px;color:#47543c;background:transparent;border:1px solid #b7c2aa;border-radius:3px;font-size:.875rem;transition:background .15s;cursor:pointer; }
+.segment:hover { background:#d2dcc6; }
+.segment[aria-pressed="true"] { background:#293425;color:#f4f7ed;border-color:#293425; }
+.mapping-input { background:#f6f8f0;padding:17px 19px;border:1px solid #c2cfb4;border-radius:4px; }
+.mapping-label { display:flex;justify-content:space-between;align-items:center;gap:12px;font:.75rem/1.5 var(--mono);color:#506143;margin-bottom:10px; }
+.field { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:10px;padding-block:4px;font:.875rem/1.5 var(--mono); }
+.field span:last-child { color:#59694b;overflow-wrap:anywhere; }
+.mapping-route { display:flex;align-items:center;justify-content:center;gap:10px;padding-block:12px;font:.75rem/1.5 var(--mono);color:#4d6140; }
+.mapping-route span:first-child { font-size:1.4rem; }
+.mapping-output { border-radius:4px;background:#283521;color:#e7f0df;padding:17px 19px;min-height:220px; }
+.mapping-output .mapping-label { color:#c2d1b5; }
+.mapping-output pre { white-space:pre-wrap;overflow-wrap:anywhere;font:.875rem/1.75 var(--mono);margin:0;color:#e4eddc; }
+.mapping-note { font-size:.875rem;color:#43543a;margin:16px 0 0;min-height:4.9em; }
+.case-study { border-top:1px solid #c4cabb;border-bottom:1px solid #c4cabb;margin-top:25px; }
+.case-study summary { display:flex;justify-content:space-between;align-items:center;gap:15px;cursor:pointer;list-style:none;padding:15px 1px;min-height:52px;font-size:.875rem; }
+.case-study summary::-webkit-details-marker { display:none; }
+.case-study summary::after { content:'+';font:1.25rem var(--mono); }
+.case-study[open] summary::after { content:'−'; }
+.case-study summary:hover { color:#82341f; }
+.case-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:32px;padding-block:9px 26px; }
+.case-grid h4 { margin:0 0 9px;font-size:1rem;font-weight:600; }
+.case-grid p { margin:0;font-size:1rem;color:#4e5b45; }
+.case-source { border-top:1px solid #d1d6c8;padding-block:7px 13px; }
+.monitor-visual { background:#e7e9f0;border-color:#cbd0dd; }
+.monitor-visual .visual-heading .mono,.monitor-visual .sample-label { color:#586078; }
+.monitor-visual .segment { color:#535c73;border-color:#b9c1d4; }
+.monitor-visual .segment:hover { background:#d8ddea; }
+.monitor-visual .segment[aria-pressed="true"] { color:white;background:#485575;border-color:#485575; }
+.monitor-window { background:#f9faff;border:1px solid #c6cede;border-radius:4px;padding:20px 18px 14px; }
+.monitor-state { display:flex;align-items:center;justify-content:space-between;gap:15px; }
+.monitor-state strong { font-size:2.4rem;line-height:1;letter-spacing:-.055em;font-weight:400;color:#293950; }
+.state-badge { border:1px solid #7d8ca5;border-radius:3px;padding:4px 9px;font:.75rem/1.5 var(--mono);color:#364b69; }
+.monitor-window[data-state="drop"] .state-badge { color:#8d381c;border-color:#c1856f;background:#fff1e8; }
+.monitor-window[data-state="failed"] .state-badge { color:#654219;border-color:#bba27e;background:#fff7e8; }
+.monitor-subtitle { font-size:.875rem;color:#626b7d;margin:9px 0 0; }
+.score-chart { display:block;width:100%;height:auto;margin-top:21px;overflow:visible; }
+.chart-key { display:flex;flex-wrap:wrap;gap:16px;font:.75rem/1.5 var(--mono);color:#545f77;margin-top:14px; }
+.key-line { display:inline-block;width:14px;height:3px;background:#566b94;margin-right:5px;vertical-align:middle; }
+.key-threshold { background:#b15e45; }
+.monitor-explanation { font-size:.875rem;color:#475570;margin:16px 0 0;min-height:4.9em; }
+.sample-table { margin-top:13px;color:#475570;font-size:.875rem; }
+.sample-table summary { cursor:pointer;min-height:44px;padding-top:10px; }
+.sample-table table { border-collapse:collapse;width:100%;margin-top:7px;font-size:.875rem; }
+.sample-table th,.sample-table td { padding:8px;border-top:1px solid #bdc7d8;text-align:left; }
+.sample-table th { font-weight:600; }
+.meta-visual { background:#eee5dd;border-color:#d9c6b7; }
+.meta-visual .visual-heading .mono,.meta-visual .sample-label { color:#76523b; }
+.signal-report { background:#fffaf6;border:1px solid #d9c5b4;border-radius:4px;overflow:hidden; }
+.report-url { font:.75rem/1.6 var(--mono);padding:12px 17px;background:#f7eee6;color:#79563d;border-bottom:1px solid #dfcbbb;overflow-wrap:anywhere; }
+.signal-row { padding:14px 17px;border-bottom:1px solid #e7d9cb; }
+.signal-row:last-child { border-bottom:0; }
+.signal-source { display:block;font:.75rem/1.5 var(--mono);color:#725c4b;margin-bottom:4px; }
+.signal-row code { color:#3b3129;font-size:.875rem;overflow-wrap:anywhere; }
+.signal-row.conflict { border-left:3px solid #ae4c2b;padding-left:14px;background:#fff0e5; }
+.conflict-note { margin:18px 0 0;font-size:.875rem;color:#634730; }
+.conflict-note strong { display:block;color:#873618;margin-bottom:4px;font-weight:600; }
+.tool-grid { grid-template-columns:1fr 1fr; }
+.tool h4 { font-size:1.55rem; }
+.tool .project-actions { margin-top:auto;padding-top:18px; }
+.tool-top { display:flex;justify-content:space-between;gap:20px;margin-bottom:17px; }
+.tool-top .mono { color:#627153; }
+.tool-example { border-top:1px solid #c7d0bd;margin-top:5px;padding-top:15px;color:#4a5c3c;font:.875rem/1.7 var(--mono); }
+.tool-example span { display:block; }
+.tool-example span:first-child { color:#6a755f;font-size:.75rem;margin-bottom:4px; }
+.deployment-path { margin:0;padding:0;list-style:none;border-top:1px solid #68745c;counter-reset:pipeline; }
+.deployment-path li { display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);counter-increment:pipeline; }
+.deployment-path li::before { content:'0' counter(pipeline);font:.75rem var(--mono);color:var(--orange); }
+.deployment-path .mono { color:#afba9f;letter-spacing:0;text-transform:none; }
+.infra-note { font-size:.875rem; }
+.about-copy>p { font-size:1.125rem; }
+.principles { margin:28px 0 16px;padding:0;list-style:none; }
+.principles li { display:grid;grid-template-columns:22px 1fr;gap:10px;border-top:1px solid var(--line);padding-block:15px;color:#b0bca5; }
+.principles li::before { content:'↳';color:var(--orange); }
+.principles strong { display:block;font-weight:400;color:var(--paper);margin-bottom:3px; }
+.principles span { font-size:.875rem; }
+.contact { --focus:#171918; }
+.contact .eyebrow { color:#472515; }
+.contact-bottom .text-link { white-space:normal;border:0; }
+.contact .text-link:hover { color:#171918;text-decoration-thickness:2px; }
+.footer { align-items:center; }
+.footer-links { display:flex;gap:25px;flex-wrap:wrap; }
+.footer a { display:inline-flex;align-items:center;min-height:44px; }
+@media(max-width:1000px) {
+  .project-layout { grid-template-columns:1fr 1fr;gap:30px }
+  .project-visual { padding:19px }
+  .segment { padding-inline:5px }
+  .case-grid { gap:22px }
+  .deployment-path li { grid-template-columns:24px 1fr }
+  .deployment-path .mono { grid-column:2 }
+}
+@media(max-width:760px) {
+  .nav { flex-wrap:wrap;gap:4px;padding-block:15px 10px }
+  .nav-links { width:100%;justify-content:space-between;gap:8px }
+  .nav-links a:nth-child(2) { display:inline-flex }
+  .hero { padding-top:33px;padding-bottom:32px }
+  h1 { font-size:clamp(3.1rem,10.7vw,5.4rem);margin-block:28px 32px }
+  .hero-bottom { grid-template-columns:1fr;gap:30px }
+  .intro { max-width:540px }
+  .evidence-strip { gap:16px;margin-top:31px }
+  .evidence-item::before { display:none }
+  .project-layout { grid-template-columns:1fr;gap:25px }
+  .project-copy { order:-1 }
+  .project-copy h3 { font-size:2.3rem }
+  .project-heading { font-size:.75rem }
+  .project-actions { margin-top:18px }
+  .project-visual { padding:22px }
+  .mapping-note,.monitor-explanation { min-height:0 }
+  .case-grid { grid-template-columns:1fr;gap:23px }
+  .tool-grid { grid-template-columns:1fr }
+  .section-top { align-items:start;flex-direction:column;gap:20px }
+  .infra-grid,.about { grid-template-columns:1fr;gap:30px }
+  .deployment-path li { grid-template-columns:24px 1fr auto }
+  .deployment-path .mono { grid-column:auto }
+  .contact-bottom { flex-direction:column;align-items:start;gap:15px }
+}
+@media(max-width:400px) {
+  h1 { font-size:3rem }
+  .project-visual { padding:16px }
+  .visual-heading { flex-wrap:wrap;gap:3px }
+  .mapping-input,.mapping-output { padding:15px }
+  .field { grid-template-columns:1fr;gap:0;margin-top:7px }
+  .project-heading { flex-direction:column;gap:3px }
+  .contact h2 { font-size:2.9rem }
+  .contact-link { width:55px;height:55px }
+  .deployment-path li { grid-template-columns:23px 1fr }
+  .deployment-path .mono { grid-column:2 }
+}
+@media print {
+  body,.work,.contact { background:white;color:#111 }
+  .wrap { padding-inline:0 }
+  .nav-links,.hero-actions,.work-index,.enhanced-control,.contact-link,.footer-links { display:none!important }
+  .hero,.work,.infrastructure,.about,.contact { padding-block:22px }
+  h1 { font-size:48px }
+  .project,.tool { break-inside:avoid }
+  .project-layout { grid-template-columns:1fr 1fr }
+  .intro,.about-copy>p,.infrastructure p,.principles li,.principles strong,.eyebrow { color:#333 }
+  .contact h2 { font-size:42px }
+}
+@media(min-width:761px) {
+  .project-layout>.project-copy { order:2 }
+  .project-layout>.project-visual { order:1 }
+}
 
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/favicon.svg">
+.project-copy,.project-visual,.hero-bottom>*,.infra-grid>*,.about>*{min-width:0}
+.field span{overflow-wrap:anywhere}
+@media(max-width:400px){.contact h2{font-size:2.6rem}.contact-top>div{min-width:0}}
+/* Motion stays attached to reading and interaction, with no ambient loops. */
+:root { --motion-ease:cubic-bezier(.22,1,.36,1); --motion-quick:180ms; }
+.button:hover { transform:none; }
+.nav-links a { position:relative; }
+.nav-links a::after {
+  content:'';position:absolute;left:0;right:0;bottom:6px;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:left;
+}
+.nav-links a:is(:hover,:focus-visible)::after { transform:scaleX(1); }
+.button span[aria-hidden],.text-link span[aria-hidden],.index-link>span:last-child,
+.nav-contact span,.contact-link span { display:inline-block; }
+.tool:focus-within { border-color:#7b8c6a; }
+@media(prefers-reduced-motion:no-preference) {
+  .nav-links a,.text-link,.index-link,.footer a {
+    transition:color var(--motion-quick),text-decoration-color var(--motion-quick);
+  }
+  .nav-links a::after { transition:transform 240ms var(--motion-ease); }
+  .button,.contact-link {
+    transition:background var(--motion-quick),color var(--motion-quick),transform 240ms var(--motion-ease);
+  }
+  .button span[aria-hidden],.text-link span[aria-hidden],.index-link>span:last-child,
+  .nav-contact span,.contact-link span { transition:transform 240ms var(--motion-ease); }
+  .tool { transition:border-color var(--motion-quick); }
+  @media(hover:hover) and (pointer:fine) {
+    .button:hover { transform:translateY(-2px); }
+    .button:hover span[aria-hidden],.text-link:hover span[aria-hidden],
+    .index-link:hover>span:last-child,.nav-contact:hover span { transform:translate(2px,-2px); }
+    .hero-actions .button[href^="#"]:hover span[aria-hidden] { transform:translate(2px,2px); }
+    .contact-link:hover span { transform:translate(4px,-4px); }
+    .tool:hover { border-color:#7b8c6a; }
+  }
+}
 
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://msschermer.us/">
-<meta property="og:site_name" content="Mike Schermer">
-<meta property="og:title" content="Mike Schermer | Solutions engineering, integrations, and implementations">
-<meta property="og:description" content="Integrations, internal tooling, and infrastructure. Everything here runs in production and the source is public.">
-<meta property="og:image" content="https://msschermer.us/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Mike Schermer. I build the tooling that sits between systems and keeps the connection working.">
+/* Final reading rhythm and responsive example framing. */
+body { font-size:1rem; }
+.mark { flex-shrink:0; }
+.mark svg { display:block;width:100%;height:100%; }
+h1 { letter-spacing:-.06em; }
+h1 em { letter-spacing:-.055em; }
+.muted { color:var(--muted); }
+.case-study summary>span { line-height:1.5; }
+.case-study summary::after { flex-shrink:0; }
+.project-copy>p { max-width:48ch; }
+.case-grid p { max-width:48ch; }
+.example-size { display:grid; }
+.example-size>* { grid-area:1/1;min-width:0; }
+.example-description { margin-top:16px; }
+.example-subtitle { margin-top:9px; }
+.example-subtitle>.monitor-subtitle { margin:0; }
+.example-destination { flex:1; }
+.example-description>.mapping-note,.example-description>.monitor-explanation { margin:0;min-height:0; }
+.example-sizer { visibility:hidden;pointer-events:none;user-select:none; }
+.chart-frame { display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:10px;margin-top:21px; }
+.chart-frame .score-chart { margin-top:0;min-width:0; }
+.chart-scale { position:relative;grid-column:1;grid-row:1;font:.75rem/1 var(--mono);color:#56627b; }
+.chart-scale span { position:absolute;right:0;transform:translateY(-50%); }
+.chart-scale span:nth-child(1) { top:11.905%; }
+.chart-scale span:nth-child(2) { top:50.794%; }
+.chart-scale span:nth-child(3) { top:89.683%; }
+.chart-time { grid-column:2;display:flex;justify-content:space-between;gap:6px;margin-top:8px;font:.75rem/1.5 var(--mono);color:#56627b; }
+.chart-unavailable { color:#795321; }
+@media(min-width:1001px) { .project-layout { align-items:center; } }
+@media(max-width:760px) {
+ .case-study summary .muted { display:block;margin-top:3px; }
+ .small-heading .mono { max-width:none; }
+ .small-heading { flex-wrap:wrap; }
+}
+@media(max-width:400px) {
+ .nav-links { column-gap:10px;row-gap:0;flex-wrap:wrap; }
+ .nav-links a { flex-shrink:0; }
+}
+</style>
+</head>
+<body id="top">
+<a href="#work" class="skip">Skip to selected work</a>
+<div class="wrap"><header class="nav">
+ <a href="#top" class="brand" aria-label="Mike Schermer, home"><span class="mark" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M15 44V21l17 16 17-16v23" stroke="currentColor" stroke-width="5" stroke-linejoin="round"></path></svg></span> Mike Schermer</a>
+ <nav class="nav-links" aria-label="Main navigation"><a href="#work">Work</a><a href="#approach">Infrastructure</a><a href="#about">About</a><a href="#contact" class="nav-contact">Let’s talk <span aria-hidden="true">↗</span></a></nav>
+</header></div>
+<main>
+<section class="hero wrap" aria-labelledby="hero-title">
+ <div class="hero-top eyebrow"><span class="signal"><span class="dot" aria-hidden="true"></span> Solutions engineering &amp; integrations</span><span>From the first request to the running system</span></div>
+ <h1 id="hero-title">Good things happen<br><em>between systems.</em></h1>
+ <div class="hero-bottom">
+  <div><p class="intro"><strong>I’m Mike Schermer.</strong> I connect platforms, build tools that make technical problems easier to see, and maintain the infrastructure behind them.</p><div class="hero-actions"><a class="button" href="#work">Explore my work <span aria-hidden="true">↘</span></a><a class="text-link" href="https://github.com/msschermer">GitHub <span aria-hidden="true">↗</span></a></div></div>
+  <nav class="work-index" aria-label="Featured project shortcuts"><div class="index-heading mono"><span>Three ways I make systems useful</span><span aria-hidden="true">↓</span></div>
+   <a class="index-link" href="#form-crm-bridge"><span class="index-num">01</span><span>Connect a form to the right CRM</span><span aria-hidden="true">↗</span></a>
+   <a class="index-link" href="#performance-monitor"><span class="index-num">02</span><span>Make performance changes visible</span><span aria-hidden="true">↗</span></a>
+   <a class="index-link" href="#meta-state-validator"><span class="index-num">03</span><span>Find the signals that disagree</span><span aria-hidden="true">↗</span></a>
+  </nav>
+ </div>
+ <div class="evidence-strip" aria-label="Portfolio overview"><div class="evidence-item"><strong>Five tools</strong><span>with specific jobs</span></div><div class="evidence-item"><strong>Public source</strong><span>explore the implementation</span></div><div class="evidence-item"><strong>Application to infrastructure</strong><span>built &amp; maintained</span></div></div>
+</section>
+<section class="work" id="work" aria-labelledby="work-title"><div class="wrap">
+ <div class="section-top"><div><span class="eyebrow">01 / Selected work</span><h2 id="work-title">The work.<br><em>And the thinking.</em></h2></div><p>What I built, why I built it, and the decisions that made it work.</p></div>
+ <article class="project" id="form-crm-bridge" aria-labelledby="bridge-title">
+  <div class="project-heading mono"><span><span class="project-no">01</span>Integration architecture</span><span>WordPress → CRM</span></div>
+  <div class="project-layout"><div class="project-copy"><h3 id="bridge-title">Form to CRM Bridge</h3><p class="project-deck">Solve the shared integration once. Adapt the part that changes.</p><p>Form integrations kept repeating the same capture, mapping, and delivery work. I separated that shared core from the platform-specific adapters, so a new CRM has a clear place to plug in.</p>
+    <dl class="project-fact"><dt>My work</dt><dd>Plugin architecture, form normalization, platform adapters, and delivery handling.</dd></dl>
+    <div class="tags" aria-label="Technologies"><span class="tag">PHP</span><span class="tag">WordPress</span><span class="tag">REST APIs</span></div>
+    <div class="project-actions"><a class="button" href="https://bridge-demo.msschermer.us">Try the form demo <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/msschermer/form-crm-bridge" aria-label="View Form to CRM Bridge source">View source <span aria-hidden="true">↗</span></a></div>
+   </div>
+   <figure class="project-visual">
+    <div class="visual-heading"><h4>One submission. Different destinations.</h4><span class="mono">Mapping example</span></div>
+    <div class="segmented enhanced-control" hidden="" role="group" aria-label="Choose a CRM mapping example">
+     <button class="segment" type="button" data-adapter="hubspot" aria-pressed="true" aria-controls="mapping-result">HubSpot</button><button class="segment" type="button" data-adapter="neos" aria-pressed="false" aria-controls="mapping-result">Neos</button><button class="segment" type="button" data-adapter="leaddocket" aria-pressed="false" aria-controls="mapping-result">Lead Docket</button>
+    </div>
+    <div class="mapping-input"><div class="mapping-label"><span>FORM FIELDS</span><span>01 / Capture</span></div><div class="field"><span>your-email</span><span>alex@example.com</span></div><div class="field"><span>comments</span><span>A new inquiry</span></div></div>
+    <div class="mapping-route"><span aria-hidden="true">↓</span><span>02 / Normalize once · map per platform</span></div>
+    <div id="mapping-result" aria-live="polite" aria-atomic="true">
+     <div class="mapping-output"><div class="mapping-label"><span id="mapping-destination">HUBSPOT / CONTACT</span><span>03 / Adapter</span></div><pre id="mapping-code">{
+  "properties": {
+    "email": "alex@example.com",
+    "message": "A new inquiry"
+  }
+}</pre></div>
+     <p class="mapping-note" id="mapping-note">HubSpot nests contact fields under properties. The form capture and normalization stay the same; the adapter owns the destination format.</p>
+    </div>
+    <figcaption class="sample-label">Illustrative field subset · sample data · no request is sent</figcaption>
+   </figure>
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mike Schermer | Solutions engineering, integrations, and implementations">
-<meta name="twitter:description" content="Integrations, internal tooling, and infrastructure. Everything here runs in production and the source is public.">
-<meta name="twitter:image" content="https://msschermer.us/og-image.png">
+  </div>
+  <details class="case-study"><summary><span>Inside the build <span class="muted">/ Boundaries, delivery, and tradeoffs</span></span></summary>
+   <div class="case-grid"><div><h4>A boundary that removes repetition</h4><p>Gravity Forms and Elementor Pro feed a canonical field set. Downstream adapters handle authentication, the destination’s request format, and the meaning of its response.</p></div><div><h4>Delivery needs a recovery path</h4><p>Network and server failures get bounded retries. Failed deliveries include the payload in the logs for recovery. A rejected payload needs investigation, not an endless retry loop.</p></div><div><h4>An adapter has a sensible limit</h4><p>Shared transport keeps the plugin compact. Retries currently happen within the request; higher-volume workloads would call for a background queue and a separate delivery lifecycle.</p></div></div>
+   <div class="case-source"><a class="text-link" href="https://github.com/msschermer/form-crm-bridge" aria-label="Read Form to CRM Bridge architecture and platform notes">Read the architecture &amp; platform notes <span aria-hidden="true">↗</span></a></div>
+  </details>
+ </article>
+ <article class="project" id="performance-monitor" aria-labelledby="monitor-title">
+  <div class="project-heading mono"><span><span class="project-no">02</span>Observability &amp; automation</span><span>Scheduled checks → useful history</span></div>
+  <div class="project-layout"><div class="project-copy"><h3 id="monitor-title">Performance Monitor</h3><p class="project-deck">Turn isolated speed tests into a history you can act on.</p><p>I rebuilt a Google Apps Script monitoring workflow as a standalone service. It checks mobile and desktop performance, preserves each measurement, and makes regressions and failed checks distinguishable.</p>
+    <dl class="project-fact"><dt>My work</dt><dd>Service rebuild, scan scheduling, SQLite data model, dashboard, and container deployment.</dd></dl><div class="tags" aria-label="Technologies"><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">SQLite</span></div>
+    <div class="project-actions"><a class="button" href="https://psi.msschermer.us">Explore the monitor <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/msschermer/psi-monitor" aria-label="View Performance Monitor source">View source <span aria-hidden="true">↗</span></a></div>
+   </div>
+   <figure class="project-visual monitor-visual">
+    <div class="visual-heading"><h4>A low score isn’t a failed check.</h4><span class="mono">Explore the difference</span></div>
+    <div class="segmented enhanced-control" hidden="" role="group" aria-label="Choose a monitoring scenario"><button class="segment" type="button" data-scenario="healthy" aria-pressed="false" aria-controls="monitor-result">Healthy run</button><button class="segment" type="button" data-scenario="drop" aria-pressed="true" aria-controls="monitor-result">Score drop</button><button class="segment" type="button" data-scenario="failed" aria-pressed="false" aria-controls="monitor-result">Failed check</button></div>
+    <div id="monitor-result" aria-live="polite" aria-atomic="true">
+     <div class="monitor-window" id="monitor-window" data-state="drop"><div class="monitor-state"><strong id="monitor-score">58<span class="sr-only"> out of 100</span></strong><span class="state-badge" id="monitor-badge">Below threshold</span></div><p class="monitor-subtitle" id="monitor-subtitle">A completed check with a lower performance score.</p>
+      <div class="chart-frame"><div class="chart-scale" aria-hidden="true"><span>100</span><span>70</span><span>40</span></div><svg class="score-chart" viewBox="20 0 410 126" role="img" aria-labelledby="chart-title chart-description">
+       <title id="chart-title">Sample performance history</title><desc id="chart-description">Six illustrative scores: 91, 94, 90, 92, 89, 58. The last score is below the threshold of 70.</desc>
+       <g fill="none" stroke="#dce1ea"><path d="M28 15H420M28 64H420M28 113H420" vector-effect="non-scaling-stroke"></path></g>
+       <path d="M28 64H420" fill="none" stroke="#b15e45" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"></path><path id="chart-line" d="M30 30L108 25L186 31L264 28L342 33L420 84" fill="none" stroke="#566b94" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path><circle id="chart-dot" cx="420" cy="84" r="5" fill="#a54728"></circle>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+      </svg><div class="chart-time" aria-hidden="true"><span>Earlier</span><span id="chart-missing" class="chart-unavailable" hidden="">No score</span><span>Latest</span></div></div>
+      <div class="chart-key"><span><i class="key-line" aria-hidden="true"></i>Performance score</span><span><i class="key-line key-threshold" aria-hidden="true"></i>Threshold: 70</span></div>
+     </div>
+     <p class="monitor-explanation" id="monitor-explanation">The score is data. Store it, flag it against the configured threshold, and keep the previous measurements so the change has context.</p>
+    </div>
+    <details class="sample-table"><summary>Read the sample measurements</summary><table><caption class="sr-only">Illustrative measurements for the selected scenario</caption><thead><tr><th scope="col">Check</th><th scope="col">Score</th><th scope="col">Result</th></tr></thead><tbody><tr><th scope="row">1</th><td>91</td><td>Completed</td></tr><tr><th scope="row">2</th><td>94</td><td>Completed</td></tr><tr><th scope="row">3</th><td>90</td><td>Completed</td></tr><tr><th scope="row">4</th><td>92</td><td>Completed</td></tr><tr><th scope="row">5</th><td>89</td><td>Completed</td></tr><tr><th scope="row">6</th><td id="sample-last-score">58</td><td id="sample-last-result">Completed</td></tr></tbody></table></details>
+    <figcaption class="sample-label">Illustrative scenarios · sample scores, not live monitoring data</figcaption>
+   </figure>
 
-<script type="application/ld+json">
-{
+  </div>
+  <details class="case-study"><summary><span>Inside the build <span class="muted">/ History, consistency, and constraints</span></span></summary>
+   <div class="case-grid"><div><h4>Keep the measurements</h4><p>Checks are append-only. The threshold is applied when results are read, so changing what counts as an alert reinterprets the history without rewriting the underlying measurements.</p></div><div><h4>Show one coherent snapshot</h4><p>The dashboard uses the latest completed scan. A scan in progress cannot mix fresh mobile results with older desktop results. Failed checks retain their error context.</p></div><div><h4>Fit the infrastructure to the job</h4><p>SQLite suits modest, periodic writes without a separate database service. Scans are paced to respect the upstream API; the configurable schedule defaults to every six hours.</p></div></div>
+   <div class="case-source"><a class="text-link" href="https://github.com/msschermer/psi-monitor" aria-label="Read Performance Monitor data model and implementation">Read the data model &amp; implementation <span aria-hidden="true">↗</span></a></div>
+  </details>
+ </article>
+ <article class="project" id="meta-state-validator" aria-labelledby="meta-title">
+  <div class="project-heading mono"><span><span class="project-no">03</span>Inspection &amp; diagnosis</span><span>Published signals → visible conflicts</span></div>
+  <div class="project-layout"><div class="project-copy"><h3 id="meta-title">Meta State Validator</h3><p class="project-deck">Make a site’s published signals inspectable.</p><p>A page, its structured data, and its crawler files can tell different stories. I built an inspector that brings those sources together and surfaces contradictions with the evidence behind them.</p>
+    <dl class="project-fact"><dt>My work</dt><dd>Inspection pipeline, signal extraction, conflict detection, and safeguards for user-supplied URLs.</dd></dl><div class="tags" aria-label="Technologies"><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">cheerio</span></div>
+    <div class="project-actions"><a class="button" href="https://meta-state.msschermer.us">Inspect a site <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/msschermer/meta-state-validator" aria-label="View Meta State Validator source">View source <span aria-hidden="true">↗</span></a></div>
+   </div>
+   <figure class="project-visual meta-visual"><div class="visual-heading"><h4>The page says two different things.</h4><span class="mono">Example finding</span></div>
+    <div class="signal-report"><div class="report-url">Inspecting example.com/services</div><div class="signal-row"><span class="signal-source">HTML / canonical</span><code>https://example.com/services</code></div><div class="signal-row conflict"><span class="signal-source">Open Graph / og:url</span><code>https://example.com/</code></div><div class="signal-row"><span class="signal-source">JSON-LD / WebPage.url</span><code>https://example.com/services</code></div></div>
+    <p class="conflict-note"><strong>Page identity conflict</strong>The canonical and structured data identify the service page. The social URL identifies the homepage. Inspect the disagreement before deciding what to change.</p><figcaption class="sample-label">Illustrative report excerpt · sample domain</figcaption>
+   </figure>
+
+  </div>
+  <details class="case-study"><summary><span>Inside the build <span class="muted">/ Evidence, scope, and safe fetching</span></span></summary>
+   <div class="case-grid"><div><h4>Show the observed state</h4><p>The inspector covers page metadata, social tags, structured data, robots directives, sitemap declarations, and llms.txt. Conflicting signals remain visible with their sources.</p></div><div><h4>Define what a result means</h4><p>This is an on-demand inspection of a URL and its supporting resources. It does not crawl the whole site or turn the result into an SEO score or a promise of search visibility.</p></div><div><h4>Bound the work</h4><p>The fetch pipeline validates destinations and redirect hops, rejects private targets, pins validated DNS addresses, and caps time and response size. Unavailable resources can be reported independently.</p></div></div>
+   <div class="case-source"><a class="text-link" href="https://github.com/msschermer/meta-state-validator" aria-label="Read Meta State Validator inspection scope and safeguards">Read the inspection scope &amp; safeguards <span aria-hidden="true">↗</span></a></div>
+  </details>
+ </article>
+ <div class="small-heading"><h3>Also on the workbench</h3><span class="mono">From the workbench</span></div>
+ <div class="tool-grid">
+  <article class="tool" id="preflight" aria-labelledby="preflight-title"><div class="tool-top"><span class="mono">04 / Launch readiness</span></div><h4 id="preflight-title">Preflight</h4><p>A pre-launch check for certificates, redirects, crawlability, and indexing settings—the details that can make a finished page hard to reach or find.</p><div class="tool-example"><span>THE WORKFLOW</span><span>Public URL → targeted checks → findings</span></div><div class="project-actions"><a class="text-link" href="https://preflight.msschermer.us">Run a check <span aria-hidden="true">↗</span></a></div></article>
+  <article class="tool" id="wcag-translator" aria-labelledby="wcag-title"><div class="tool-top"><span class="mono">05 / Accessibility research</span></div><h4 id="wcag-title">WCAG Translator</h4><p>Connect a plain-language accessibility issue or scanner finding to relevant WCAG criteria and techniques, with uncertainty made visible.</p><div class="tool-example"><span>THE WORKFLOW</span><span>Finding → relevant criteria → source guidance</span></div><div class="project-actions"><a class="text-link" href="https://wcag-translator.msschermer.us">Explore the translator <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/msschermer/wcag-translator" aria-label="View WCAG Translator source">View source <span aria-hidden="true">↗</span></a></div></article>
+ </div>
+</div></section>
+<section class="infrastructure wrap" id="approach" aria-labelledby="infra-title"><div class="infra-grid">
+ <div><span class="eyebrow">02 / From build to operation</span><h2 id="infra-title">The infrastructure<br>is part of the work.</h2><p>I maintain the deployment setup alongside the applications. Each tool builds its own image; the infrastructure repository defines how the services run together.</p><a class="text-link" href="https://github.com/msschermer/portfolio-infra">Explore the infrastructure <span aria-hidden="true">↗</span></a></div>
+ <div><ol class="deployment-path" aria-label="Application deployment architecture"><li><span>Version the application</span><span class="mono">GitHub</span></li><li><span>Build &amp; publish the image</span><span class="mono">Actions / GHCR</span></li><li><span>Run the services</span><span class="mono">Docker Compose</span></li><li><span>Route HTTPS traffic</span><span class="mono">Caddy</span></li></ol><p class="infra-note">Application code and deployment configuration stay separate. Persistent data lives on volumes across container replacements.</p></div>
+</div></section>
+<section class="about wrap" id="about" aria-labelledby="about-title">
+ <div><span class="eyebrow">03 / How I work</span><h2 id="about-title">Understand the problem.<br><em>Own the connection.</em></h2></div>
+ <div class="about-copy"><p>I’m a solutions engineer focused on integrations, implementations, and internal tooling. I’m interested in the practical work of making platforms useful together.</p><p>That means understanding the workflow before writing the connector, making failures explainable, and leaving behind a system another engineer can follow.</p>
+  <ul class="principles"><li><div><strong>Find the boundary that matters.</strong><span>Separate shared behavior from the details that vary by platform.</span></div></li><li><div><strong>Preserve the evidence.</strong><span>A failed request, a changed score, or a conflicting signal should be something you can investigate.</span></div></li><li><div><strong>Build for the next person.</strong><span>Clear source, documented decisions, and reproducible deployment are part of the deliverable.</span></div></li></ul>
+  <a class="text-link" href="https://www.linkedin.com/in/schermermike/">More about me on LinkedIn <span aria-hidden="true">↗</span></a>
+ </div>
+</section>
+<section class="contact" id="contact" aria-labelledby="contact-title"><div class="wrap">
+ <div class="contact-top"><div><span class="eyebrow">An integration to solve. A team to join.</span><h2 id="contact-title">Let’s make<br>the connection.</h2></div><a class="contact-link" href="https://www.linkedin.com/in/schermermike/" aria-label="Contact Mike Schermer on LinkedIn"><span aria-hidden="true">↗</span></a></div>
+ <div class="contact-bottom"><p>Have a role in mind or a system that needs to work better? Tell me what you’re building and where you’re getting stuck.</p><a class="text-link" href="https://www.linkedin.com/in/schermermike/">Start a conversation on LinkedIn <span aria-hidden="true">↗</span></a></div>
+</div></section>
+</main>
+<footer class="footer wrap"><span>© 2026 Mike Schermer</span><div class="footer-links"><a href="https://github.com/msschermer">GitHub ↗</a><a href="https://www.linkedin.com/in/schermermike/">LinkedIn ↗</a><a href="#top">Back to top ↑</a></div></footer>
+<script>
+
+(() => {
+  'use strict';
+  const motion = createMotion();
+  const adapters = {
+    hubspot: {
+      destination: 'HUBSPOT / CONTACT',
+      payload: { properties: { email: 'alex@example.com', message: 'A new inquiry' } },
+      note: 'HubSpot nests contact fields under properties. The form capture and normalization stay the same; the adapter owns the destination format.'
+    },
+    neos: {
+      destination: 'NEOS / INTAKE',
+      payload: { Email: 'alex@example.com', Synopsis: 'A new inquiry' },
+      note: 'Neos receives an intake with platform-specific field names. The same inquiry becomes Synopsis, while the shared core continues to handle capture and normalization.'
+    },
+    leaddocket: {
+      destination: 'LEAD DOCKET / OPPORTUNITY',
+      payload: { Email: 'alex@example.com', Summary: 'A new inquiry' },
+      note: 'Lead Docket receives an opportunity. The adapter maps the inquiry to Summary; adding this destination does not require rebuilding the form capture layer.'
+    }
+  };
+  const scenarios = {
+    healthy: {
+      score: '93', scoreLabel: ' out of 100', badge: 'Above threshold',
+      subtitle: 'A completed check with a healthy performance score.',
+      explanation: 'A successful check adds a new measurement to the history. Previous scores stay intact, so the dashboard can show change over time.',
+      path: 'M30 30L108 25L186 31L264 28L342 33L420 26', y: '26',
+      description: 'Six illustrative scores: 91, 94, 90, 92, 89, 93. All exceed the threshold of 70.',
+      tableScore: '93', tableResult: 'Completed'
+    },
+    drop: {
+      score: '58', scoreLabel: ' out of 100', badge: 'Below threshold',
+      subtitle: 'A completed check with a lower performance score.',
+      explanation: 'The score is data. Store it, flag it against the configured threshold, and keep the previous measurements so the change has context.',
+      path: 'M30 30L108 25L186 31L264 28L342 33L420 84', y: '84',
+      description: 'Six illustrative scores: 91, 94, 90, 92, 89, 58. The last score is below the threshold of 70.',
+      tableScore: '58', tableResult: 'Completed'
+    },
+    failed: {
+      score: '—', scoreLabel: ' No score', badge: 'Request failed',
+      subtitle: 'The upstream request timed out. No score was returned.',
+      explanation: 'A failed request is recorded as an error, never a zero score. Keep its reason alongside the last successful measurements so an API failure cannot masquerade as a performance drop.',
+      path: 'M30 30L108 25L186 31L264 28L342 33', y: '33',
+      description: 'Five illustrative scores: 91, 94, 90, 92, 89. The sixth request failed and has no score; it is not plotted as zero.',
+      tableScore: 'No score', tableResult: 'Request timed out'
+    }
+  };
+  const byId = id => document.getElementById(id);
+  const adapterButtons = [...document.querySelectorAll('[data-adapter]')];
+  const scenarioButtons = [...document.querySelectorAll('[data-scenario]')];
+  adapterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const adapter = adapters[button.dataset.adapter];
+      if (!adapter || button.getAttribute('aria-pressed') === 'true') return;
+      adapterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      byId('mapping-destination').textContent = adapter.destination;
+      byId('mapping-code').textContent = JSON.stringify(adapter.payload, null, 2);
+      byId('mapping-note').textContent = adapter.note;
+      motion.feedback(document.querySelector('.mapping-output'));
+    });
+  });
+  scenarioButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const key = button.dataset.scenario;
+      const scenario = scenarios[key];
+      if (!scenario || button.getAttribute('aria-pressed') === 'true') return;
+      scenarioButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      byId('monitor-window').dataset.state = key;
+      byId('monitor-score').textContent = scenario.score;
+      const accessibleScore = document.createElement('span');
+      accessibleScore.className = 'sr-only';
+      accessibleScore.textContent = scenario.scoreLabel;
+      byId('monitor-score').append(accessibleScore);
+      byId('monitor-badge').textContent = scenario.badge;
+      byId('monitor-subtitle').textContent = scenario.subtitle;
+      byId('monitor-explanation').textContent = scenario.explanation;
+      byId('chart-line').setAttribute('d', scenario.path);
+      byId('chart-dot').setAttribute('cy', scenario.y);
+      byId('chart-dot').setAttribute('fill', key === 'healthy' ? '#566b94' : '#a54728');
+      byId('chart-dot').style.display = key === 'failed' ? 'none' : '';
+      byId('chart-missing').style.display = key === 'failed' ? '' : 'none';
+      byId('chart-missing').removeAttribute('hidden');
+      byId('chart-description').textContent = scenario.description;
+      byId('sample-last-score').textContent = scenario.tableScore;
+      byId('sample-last-result').textContent = scenario.tableResult;
+      motion.draw(byId('chart-line'));
+    });
+  });
+  document.querySelectorAll('.enhanced-control').forEach(control => { control.hidden = false; });
+  reserveExampleSpace('mapping-destination', Object.values(adapters).map(adapter => adapter.destination), 'example-destination');
+  reserveExampleSpace('mapping-code', Object.values(adapters).map(adapter => JSON.stringify(adapter.payload, null, 2)), 'example-code');
+  reserveExampleSpace('mapping-note', Object.values(adapters).map(adapter => adapter.note), 'example-description');
+  reserveExampleSpace('monitor-subtitle', Object.values(scenarios).map(scenario => scenario.subtitle), 'example-subtitle');
+  reserveExampleSpace('monitor-explanation', Object.values(scenarios).map(scenario => scenario.explanation), 'example-description');
+  motion.start();
+
+  function reserveExampleSpace(id, variants, className) {
+    // CSS grid reserves the tallest real variant at any width or text size.
+    // Sizing copies are hidden from both assistive technology and interaction.
+    const original = byId(id);
+    const frame = document.createElement('div');
+    frame.className = 'example-size ' + className;
+    original.before(frame);
+    frame.append(original);
+    for (const text of variants) {
+      const sizingCopy = original.cloneNode(false);
+      sizingCopy.removeAttribute('id');
+      sizingCopy.setAttribute('aria-hidden', 'true');
+      sizingCopy.classList.add('example-sizer');
+      sizingCopy.textContent = text;
+      frame.append(sizingCopy);
+    }
+  }
+
+  function createMotion() {
+    // Content is visible by default. Unsupported APIs simply leave it static.
+    const preference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const active = new Map();
+    const seen = new Set();
+    const groups = [...document.querySelectorAll(
+      '.section-top, .project-layout, .tool-grid, .infra-grid, .about, .contact-top'
+    )];
+    const easing = 'cubic-bezier(.22,1,.36,1)';
+    let observer = null;
+    let printing = false;
+
+    const enabled = () => preference && !preference.matches && !printing && !document.hidden;
+    function play(element, frames, options = {}) {
+      if (!element || !enabled() || typeof element.animate !== 'function') return;
+      active.get(element)?.cancel();
+      try {
+        const animation = element.animate(frames, { duration:240, easing, ...options });
+        active.set(element, animation);
+        const release = () => {
+          if (active.get(element) === animation) active.delete(element);
+        };
+        animation.onfinish = release;
+        animation.oncancel = release;
+      } catch {
+        // An optional visual effect must never interrupt the project controls.
+      }
+    }
+    function cancelAll() {
+      for (const animation of active.values()) animation.cancel();
+      active.clear();
+      observer?.disconnect();
+      observer = null;
+    }
+    function observeSections() {
+      if (!enabled() || !('IntersectionObserver' in window)) return;
+      observer?.disconnect();
+      observer = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting || seen.has(entry.target)) continue;
+          seen.add(entry.target);
+          observer?.unobserve(entry.target);
+          if (!entry.target.contains(document.activeElement)) {
+            play(entry.target, [
+              { opacity:.55, transform:'translateY(14px)' },
+              { opacity:1, transform:'translateY(0)' }
+            ], { duration:560 });
+          }
+        }
+        if (seen.size === groups.length) observer?.disconnect();
+      }, { threshold:0, rootMargin:'0px 0px 40px 0px' });
+      for (const group of groups) {
+        if (seen.has(group)) continue;
+        // Existing, restored, and anchored viewports stay immediately readable.
+        if (group.getBoundingClientRect().top < window.innerHeight - 24) seen.add(group);
+        else observer.observe(group);
+      }
+    }
+    function settleFocused(target) {
+      for (const group of groups) {
+        if (group.contains(target)) {
+          seen.add(group);
+          observer?.unobserve(group);
+        }
+      }
+      for (const [element, animation] of active) {
+        if (element.contains(target)) {
+          animation.cancel();
+          active.delete(element);
+        }
+      }
+    }
+    return {
+      feedback(element) {
+        play(element, [
+          { opacity:.65, transform:'translateY(4px)' },
+          { opacity:1, transform:'translateY(0)' }
+        ]);
+      },
+      draw(path) {
+        // Draw the new result; never interpolate measurements or a missing score.
+        path.setAttribute('pathLength', '1');
+        play(path, [
+          { strokeDasharray:'1 1', strokeDashoffset:'1' },
+          { strokeDasharray:'1 1', strokeDashoffset:'0' }
+        ], { duration:420 });
+      },
+      start() {
+        if (!window.location.hash && window.scrollY < 24) {
+          play(document.querySelector('.hero h1'), [
+            { opacity:.55, transform:'translateY(16px)' },
+            { opacity:1, transform:'translateY(0)' }
+          ], { duration:620 });
+          play(document.querySelector('.hero-bottom'), [
+            { opacity:.65, transform:'translateY(10px)' },
+            { opacity:1, transform:'translateY(0)' }
+          ], { duration:540, delay:70, fill:'backwards' });
+        }
+        observeSections();
+        preference?.addEventListener?.('change', () => {
+          cancelAll();
+          observeSections();
+        });
+        document.addEventListener('focusin', event => settleFocused(event.target));
+        window.addEventListener('hashchange', () => {
+          // Stop current entrances on direct navigation; later groups still reveal once.
+          for (const animation of active.values()) animation.cancel();
+          active.clear();
+        });
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) cancelAll();
+          else observeSections();
+        });
+        window.addEventListener('beforeprint', () => { printing = true; cancelAll(); });
+        window.addEventListener('afterprint', () => { printing = false; observeSections(); });
+        window.addEventListener('pagehide', cancelAll);
+        window.addEventListener('pageshow', event => { if (event.persisted) observeSections(); });
+        document.querySelectorAll('.case-study').forEach(details => {
+          details.addEventListener('toggle', () => {
+            const content = details.querySelector('.case-grid');
+            if (details.open) this.feedback(content);
+            else active.get(content)?.cancel();
+          });
+        });
+      }
+    };
+  }
+})();
+</script>
+<script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -43,21 +775,10 @@
       "name": "Mike Schermer",
       "url": "https://msschermer.us/",
       "jobTitle": "Solutions Engineer",
-      "description": "Builds integrations, internal tooling, and the infrastructure underneath them.",
+      "description": "Builds integrations, developer tools, and the infrastructure behind them.",
       "sameAs": [
         "https://github.com/msschermer",
         "https://www.linkedin.com/in/schermermike/"
-      ],
-      "knowsAbout": [
-        "Systems integration",
-        "Data integration",
-        "REST API design",
-        "Web Content Accessibility Guidelines",
-        "Performance Optimization",
-        "Technical SEO",
-        "Application security",
-        "Containerized deployment",
-        "Continuous integration and delivery"
       ]
     },
     {
@@ -65,769 +786,125 @@
       "@id": "https://msschermer.us/#website",
       "url": "https://msschermer.us/",
       "name": "Mike Schermer",
-      "publisher": { "@id": "https://msschermer.us/#person" },
+      "publisher": {
+        "@id": "https://msschermer.us/#person"
+      },
       "inLanguage": "en-US"
     },
-
     {
-  "@type": "WebApplication",
-  "@id": "https://msschermer.us/#meta-state-validator",
-  "name": "Meta State Validator",
-  "applicationCategory": "DeveloperApplication",
-  "url": "https://meta-state.msschermer.us",
-  "author": { "@id": "https://msschermer.us/#person" },
-  "description": "Developer tool for inspecting page metadata, structured data, crawler directives, sitemaps, llms.txt, and conflicting published signals.",
-  "operatingSystem": "Any",
-  "browserRequirements": "Requires JavaScript",
-  "isAccessibleForFree": true,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-},
-{
-  "@type": "SoftwareSourceCode",
-  "name": "Meta State Validator source",
-  "codeRepository": "https://github.com/msschermer/meta-state-validator",
-  "programmingLanguage": "JavaScript",
-  "runtimePlatform": "Node.js",
-  "author": { "@id": "https://msschermer.us/#person" },
-  "targetProduct": { "@id": "https://msschermer.us/#meta-state-validator" }
-},
-
-    {
-      "@type": "WebApplication",
-      "@id": "https://msschermer.us/#psi-monitor",
-      "name": "PageSpeed Monitor",
-      "applicationCategory": "DeveloperApplication",
-      "url": "https://psi.msschermer.us",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "description": "Scheduled web performance monitoring with score history and alerting.",
-      "operatingSystem": "Any",
-      "browserRequirements": "Requires JavaScript",
-      "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      "@type": "CollectionPage",
+      "@id": "https://msschermer.us/#portfolio",
+      "url": "https://msschermer.us/",
+      "name": "Mike Schermer — Selected engineering work",
+      "isPartOf": {
+        "@id": "https://msschermer.us/#website"
+      },
+      "about": {
+        "@id": "https://msschermer.us/#person"
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://msschermer.us/#form-crm-bridge"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://msschermer.us/#performance-monitor"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": "https://msschermer.us/#meta-state-validator"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@id": "https://msschermer.us/#preflight"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@id": "https://msschermer.us/#wcag-translator"
+            }
+          }
+        ]
+      }
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "PageSpeed Monitor source",
-      "codeRepository": "https://github.com/msschermer/psi-monitor",
-      "programmingLanguage": ["JavaScript", "SQL"],
-      "runtimePlatform": "Node.js",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "targetProduct": { "@id": "https://msschermer.us/#psi-monitor" }
-    },
-
-    {
-      "@type": "SoftwareApplication",
       "@id": "https://msschermer.us/#form-crm-bridge",
       "name": "Form to CRM Bridge",
-      "applicationCategory": "DeveloperApplication",
-      "url": "https://bridge-demo.msschermer.us",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "description": "WordPress plugin that delivers website form submissions into a CRM through pluggable platform adapters.",
-      "operatingSystem": "WordPress",
-      "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "Form to CRM Bridge source",
+      "description": "Shared form capture and normalization with platform-specific CRM adapters.",
       "codeRepository": "https://github.com/msschermer/form-crm-bridge",
       "programmingLanguage": "PHP",
-      "runtimePlatform": "WordPress",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "targetProduct": { "@id": "https://msschermer.us/#form-crm-bridge" }
+      "author": {
+        "@id": "https://msschermer.us/#person"
+      }
     },
-
     {
-      "@type": "WebApplication",
+      "@type": "SoftwareSourceCode",
+      "@id": "https://msschermer.us/#performance-monitor",
+      "name": "Performance Monitor",
+      "description": "Scheduled PageSpeed monitoring with measurement history and error context.",
+      "codeRepository": "https://github.com/msschermer/psi-monitor",
+      "programmingLanguage": [
+        "JavaScript",
+        "SQL"
+      ],
+      "author": {
+        "@id": "https://msschermer.us/#person"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://msschermer.us/#meta-state-validator",
+      "name": "Meta State Validator",
+      "description": "An inspector for published metadata, crawler resources, and conflicting signals.",
+      "codeRepository": "https://github.com/msschermer/meta-state-validator",
+      "programmingLanguage": "JavaScript",
+      "author": {
+        "@id": "https://msschermer.us/#person"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
       "@id": "https://msschermer.us/#preflight",
       "name": "Preflight",
-      "applicationCategory": "DeveloperApplication",
+      "description": "On-demand pre-launch checks for public URLs.",
+      "author": {
+        "@id": "https://msschermer.us/#person"
+      },
       "url": "https://preflight.msschermer.us",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "description": "Pre-launch checker that runs certificate, redirect, crawlability and indexing checks against a live URL on demand.",
-      "operatingSystem": "Any",
-      "browserRequirements": "Requires JavaScript",
-      "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any"
     },
     {
       "@type": "SoftwareSourceCode",
-      "name": "Preflight source",
-      "codeRepository": "https://github.com/msschermer/preflight",
-      "programmingLanguage": "JavaScript",
-      "runtimePlatform": "Node.js",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "targetProduct": { "@id": "https://msschermer.us/#preflight" }
-    },
-
-    {
-      "@type": "WebApplication",
       "@id": "https://msschermer.us/#wcag-translator",
       "name": "WCAG Translator",
-      "applicationCategory": "DeveloperApplication",
-      "url": "https://wcag-translator.msschermer.us",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "description": "API that translates plain engineering language, automated checker rule ids and whole scanner reports into WCAG success criteria, techniques and terminology.",
-      "operatingSystem": "Any",
-      "browserRequirements": "Requires JavaScript",
-      "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-    },
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "WCAG Translator source",
+      "description": "Maps accessibility findings to relevant WCAG criteria and techniques.",
       "codeRepository": "https://github.com/msschermer/wcag-translator",
       "programmingLanguage": "JavaScript",
-      "runtimePlatform": "Node.js",
-      "license": "https://spdx.org/licenses/MIT.html",
-      "author": { "@id": "https://msschermer.us/#person" },
-      "targetProduct": { "@id": "https://msschermer.us/#wcag-translator" }
-    },
-
-    {
-      "@type": "SoftwareSourceCode",
-      "name": "Portfolio infrastructure",
-      "description": "Docker Compose, Caddy and GitHub Actions configuration for the server the other tools run on.",
-      "codeRepository": "https://github.com/msschermer/portfolio-infra",
-      "programmingLanguage": ["YAML", "Dockerfile"],
-      "runtimePlatform": "Docker",
-      "author": { "@id": "https://msschermer.us/#person" }
+      "author": {
+        "@id": "https://msschermer.us/#person"
+      }
     }
   ]
-}
-</script>
+}</script>
 
-<style>
-  :root {
-    --paper:      #EDF1F6;
-    --card:       #FBFCFD;
-    --ink:        #16202C;
-    --ink-soft:   #4A5A6B;
-    --ink-faint:  #7B8A9A;
-    --rule:       #C6D0DC;
-    --rule-soft:  #DFE5EC;
-    --blue:       #0B5E8A;
-    --blue-wash:  #E3EDF4;
-    --live:       #1B7A4B;
 
-    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-    --gutter: clamp(1.25rem, 5vw, 4rem);
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body {
-    font-family: var(--sans);
-    background-color: var(--paper);
-    background-image:
-      linear-gradient(var(--rule-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
-    background-size: 32px 32px;
-    color: var(--ink);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .sheet {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 0 var(--gutter) 4rem;
-  }
-
-  a {
-    color: inherit;
-  }
-
-  .label {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-
-  .skip {
-    position: absolute;
-    left: -9999px;
-    background: var(--ink);
-    color: var(--paper);
-    padding: .6rem 1rem;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-
-  .skip:focus {
-    left: 1rem;
-    top: 1rem;
-    z-index: 10;
-  }
-
-  /* ---------- Masthead ---------- */
-
-  .masthead {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 1rem;
-    flex-wrap: wrap;
-    padding: 1.75rem 0 1rem;
-    border-bottom: 1px solid var(--ink);
-  }
-
-  .masthead-name {
-    font-family: var(--mono);
-    font-size: clamp(15px, 2vw, 17px);
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  .masthead-role {
-    font-size: 13px;
-    color: var(--ink-soft);
-    margin-top: 2px;
-  }
-
-  .masthead-links {
-    display: flex;
-    gap: 1.25rem;
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.04em;
-  }
-
-  .masthead-links a {
-    text-decoration: none;
-    color: var(--ink-soft);
-    padding-bottom: 2px;
-    border-bottom: 1px solid var(--rule);
-    transition: color .15s, border-color .15s;
-  }
-
-  .masthead-links a:hover,
-  .masthead-links a:focus-visible {
-    color: var(--blue);
-    border-color: var(--blue);
-  }
-
-  /* ---------- Thesis ---------- */
-
-  .thesis {
-    padding: clamp(1.75rem, 4.5vw, 3rem) 0 clamp(1.75rem, 4vw, 2.75rem);
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: clamp(1.5rem, 4vw, 3.5rem);
-    align-items: end;
-  }
-
-  .thesis-statement {
-    font-family: var(--mono);
-    font-size: clamp(1.25rem, 2.8vw, 1.85rem);
-    font-weight: 400;
-    line-height: 1.34;
-    letter-spacing: -0.015em;
-    text-wrap: balance;
-  }
-
-  .thesis-statement em {
-    font-style: normal;
-    color: var(--blue);
-  }
-
-  .thesis-note {
-    font-size: 14.5px;
-    color: var(--ink-soft);
-    max-width: 46ch;
-  }
-
-  @media (max-width: 760px) {
-    .thesis {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      align-items: start;
-    }
-  }
-
-  /* ---------- Section heading ---------- */
-
-  .section-head {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    padding-bottom: .6rem;
-    border-bottom: 1px solid var(--ink);
-    margin-bottom: 1.5rem;
-  }
-
-  .section-head .count {
-    margin-left: auto;
-  }
-
-  /* ---------- Tool cards ---------- */
-
-  .bench {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
-    gap: 1.25rem;
-  }
-
-  .tool {
-    display: flex;
-    flex-direction: column;
-    background: var(--card);
-    border: 1px solid var(--rule);
-    border-top: 3px solid var(--ink);
-    padding: 1.4rem 1.4rem 1.15rem;
-    transition: border-color .18s, transform .18s;
-  }
-
-  .tool:hover {
-    border-color: var(--blue);
-    border-top-color: var(--blue);
-    transform: translateY(-2px);
-  }
-
-  .tool-status {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin-bottom: .85rem;
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .pip {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--live);
-    box-shadow: 0 0 0 3px rgba(27,122,75,.14);
-    flex: none;
-  }
-
-  .pip.code-only {
-    background: var(--ink-faint);
-    box-shadow: 0 0 0 3px rgba(123,138,154,.14);
-  }
-
-  .tool-name {
-    font-family: var(--mono);
-    font-size: 1.02rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin-bottom: .45rem;
-  }
-
-  /* Fixed block so every spec table starts on the same line across cards */
-
-  .tool-line {
-    font-size: 14.5px;
-    color: var(--ink-soft);
-    margin-bottom: 1.1rem;
-    min-height: 7.2em;
-  }
-
-  .spec {
-    border-top: 1px solid var(--rule-soft);
-  }
-
-  .spec-row {
-    display: grid;
-    grid-template-columns: 5.5rem 1fr;
-    gap: .75rem;
-    padding: .55rem 0;
-    border-bottom: 1px solid var(--rule-soft);
-    font-size: 13px;
-  }
-
-  .spec-row dt {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    padding-top: 2px;
-  }
-
-  .spec-row.failure dt {
-    color: var(--blue);
-  }
-
-  .tool-actions {
-    display: flex;
-    gap: .5rem;
-    margin-top: auto;
-    padding-top: 1.15rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    white-space: nowrap;
-    padding: .55rem .7rem;
-    border: 1px solid var(--ink);
-    transition: background .15s, color .15s, border-color .15s;
-  }
-
-  .btn-primary {
-    background: var(--ink);
-    color: var(--paper);
-  }
-
-  .btn-primary:hover,
-  .btn-primary:focus-visible {
-    background: var(--blue);
-    border-color: var(--blue);
-  }
-
-  .btn-ghost {
-    color: var(--ink);
-  }
-
-  .btn-ghost:hover,
-  .btn-ghost:focus-visible {
-    background: var(--blue-wash);
-    border-color: var(--blue);
-    color: var(--blue);
-  }
-
-  /* ---------- Colophon ---------- */
-
-  .colophon {
-    margin-top: 3.5rem;
-    padding-top: 1.15rem;
-    border-top: 1px solid var(--ink);
-    display: flex;
-    justify-content: space-between;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    align-items: flex-start;
-  }
-
-  .colophon p {
-    font-size: 13.5px;
-    color: var(--ink-soft);
-    max-width: 46ch;
-  }
-
-  .colophon a {
-    color: var(--blue);
-    text-decoration: none;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  .colophon a:hover {
-    border-color: var(--blue);
-  }
-
-  /* ---------- Motion ---------- */
-
-  .rise {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: rise .5s ease forwards;
-  }
-
-  .rise:nth-child(1) { animation-delay: .04s; }
-  .rise:nth-child(2) { animation-delay: .12s; }
-  .rise:nth-child(3) { animation-delay: .20s; }
-  .rise:nth-child(4) { animation-delay: .28s; }
-  .rise:nth-child(5) { animation-delay: .36s; }
-  .rise:nth-child(6) { animation-delay: .44s; }
-
-  @keyframes rise {
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--blue);
-    outline-offset: 3px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation: none !important;
-      transition: none !important;
-    }
-
-    .rise {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  /* Remove fixed card-description height once cards stack more vertically */
-
-  @media (max-width: 700px) {
-    .tool-line {
-      min-height: 0;
-    }
-  }
-
-  /* Stack spec labels above their values on narrow phones */
-
-  @media (max-width: 480px) {
-    .spec-row {
-      grid-template-columns: 1fr;
-      gap: .15rem;
-    }
-  }
-</style>
-</head>
-<body>
-
-<a class="skip" href="#bench-heading">Skip to the tools</a>
-
-<div class="sheet">
-
-  <header class="masthead">
-    <div>
-      <div class="masthead-name">Mike Schermer</div>
-      <div class="masthead-role">Solutions engineering, integrations, and implementations</div>
-    </div>
-    <nav class="masthead-links" aria-label="Elsewhere">
-      <a href="https://github.com/msschermer">GitHub</a>
-      <a href="https://www.linkedin.com/in/schermermike/">LinkedIn</a>
-    </nav>
-  </header>
-
-  <section class="thesis">
-    <h1 class="thesis-statement">
-      I build the tooling that sits <em>between systems</em> and keeps the connection working.
-    </h1>
-    <p class="thesis-note">
-      Integrations, internal tooling, and the infrastructure underneath them. Everything below runs
-      in production on a server I set up and maintain, deploys from its own pipeline, and is public
-      to read.
-    </p>
-  </section>
-
-  <section aria-labelledby="bench-heading">
-    <div class="section-head">
-      <h2 class="label" id="bench-heading">On the bench</h2>
-      <span class="label count">6 tools</span>
-    </div>
-
-    <div class="bench">
-
-<article class="tool rise">
-  <div class="tool-status">
-    <span class="pip" aria-hidden="true"></span>
-    <span class="label">Running</span>
-  </div>
-  <h3 class="tool-name">Meta State Validator</h3>
-  <p class="tool-line">
-    Inspects the metadata a public site publishes: page metadata, structured data,
-    crawler directives, sitemaps, and llms.txt, with conflicts surfaced across sources.
-  </p>
-  <dl class="spec">
-    <div class="spec-row">
-      <dt>Built with</dt>
-      <dd>Node, Express, cheerio</dd>
-    </div>
-    <div class="spec-row">
-      <dt>Runs as</dt>
-      <dd>On-demand inspection of one public URL and its supporting files</dd>
-    </div>
-    <div class="spec-row failure">
-      <dt>When it fails</dt>
-      <dd>Refuses private and internal targets on every redirect hop, caps fetches by time and size, and returns partial results when supporting files cannot be read</dd>
-    </div>
-  </dl>
-  <div class="tool-actions">
-    <a class="btn btn-primary" href="https://meta-state.msschermer.us">Open inspector</a>
-    <a class="btn btn-ghost" href="https://github.com/msschermer/meta-state-validator">Read the code</a>
-  </div>
-</article>
-              
-      <article class="tool rise">
-        <div class="tool-status">
-          <span class="pip" aria-hidden="true"></span>
-          <span class="label">Running</span>
-        </div>
-        <h3 class="tool-name">Performance Monitor</h3>
-        <p class="tool-line">
-          Automatically checks PageSpeed Insights performance scores across a list of sites on a recurring schedule, tracks them 
-          over time, and flags drops below threshold so regressions can be addressed proactively.
-        </p>
-        <dl class="spec">
-          <div class="spec-row">
-            <dt>Built with</dt>
-            <dd>Node, Express, SQLite</dd>
-          </div>
-          <div class="spec-row">
-            <dt>Runs as</dt>
-            <dd>Scheduled scan every six hours, unattended</dd>
-          </div>
-          <div class="spec-row failure">
-            <dt>When it fails</dt>
-            <dd>Retries with backoff, records why each check failed, and shows the reason in the dashboard</dd>
-          </div>
-        </dl>
-        <div class="tool-actions">
-          <a class="btn btn-primary" href="https://psi.msschermer.us">Access monitor</a>
-          <a class="btn btn-ghost" href="https://github.com/msschermer/psi-monitor">Read the code</a>
-        </div>
-      </article>
-
-      <article class="tool rise">
-        <div class="tool-status">
-          <span class="pip" aria-hidden="true"></span>
-          <span class="label">Running</span>
-        </div>
-        <h3 class="tool-name">Form to CRM Bridge</h3>
-        <p class="tool-line">
-        Routes website form submissions into intake systems automatically, with consistent 
-        field mapping, delivery handling, and recovery when an endpoint fails.
-        </p>
-        <dl class="spec">
-          <div class="spec-row">
-            <dt>Built with</dt>
-            <dd>PHP, REST APIs</dd>
-          </div>
-          <div class="spec-row">
-            <dt>Runs as</dt>
-            <dd>Event-driven delivery on each form submission</dd>
-          </div>
-          <div class="spec-row failure">
-            <dt>When it fails</dt>
-            <dd>Never blocks the submission, keeps the payload so the lead is recoverable, and separates what to retry from what needs a person</dd>
-          </div>
-        </dl>
-        <div class="tool-actions">
-          <a class="btn btn-primary" href="https://bridge-demo.msschermer.us">Send test</a>
-          <a class="btn btn-ghost" href="https://github.com/msschermer/form-crm-bridge">Read the code</a>
-        </div>
-      </article>
-
-      <article class="tool rise">
-        <div class="tool-status">
-          <span class="pip" aria-hidden="true"></span>
-          <span class="label">Running</span>
-        </div>
-        <h3 class="tool-name">Preflight</h3>
-        <p class="tool-line">
-          Paste any URL and get the pre-launch checklist run against the live page in seconds: certificates, redirects, crawlability, and the settings that quietly keep a site out of search.
-        </p>
-        <dl class="spec">
-          <div class="spec-row">
-            <dt>Built with</dt>
-            <dd>Node, Express, cheerio</dd>
-          </div>
-          <div class="spec-row">
-            <dt>Runs as</dt>
-            <dd>On demand, no scheduling, nothing stored</dd>
-          </div>
-          <div class="spec-row failure">
-            <dt>When it fails</dt>
-            <dd>Refuses private and internal addresses on every redirect hop, times out slow targets, and reports partial results rather than failing the whole run</dd>
-          </div>
-        </dl>
-        <div class="tool-actions">
-          <a class="btn btn-primary" href="https://preflight.msschermer.us">Run scan</a>
-          <a class="btn btn-ghost" href="https://github.com/msschermer/preflight">Read the code</a>
-        </div>
-      </article>
-
-      <article class="tool rise">
-        <div class="tool-status">
-          <span class="pip" aria-hidden="true"></span>
-          <span class="label">Running</span>
-        </div>
-        <h3 class="tool-name">WCAG Translator</h3>
-        <p class="tool-line">
-          Describe an accessibility problem the way a developer would, or paste a rule id or a whole scanner report, and it names the WCAG success criteria behind the finding along with the techniques for fixing it.
-        </p>
-        <dl class="spec">
-          <div class="spec-row">
-            <dt>Built with</dt>
-            <dd>Node, Express, the official W3C WCAG data</dd>
-          </div>
-          <div class="spec-row">
-            <dt>Runs as</dt>
-            <dd>An API, answering on demand, rebuilt monthly as W3C republish</dd>
-          </div>
-          <div class="spec-row failure">
-            <dt>When it fails</dt>
-            <dd>Serves available stored data if w3.org is unreachable, and labels weak matches as leads rather than answers</dd>
-          </div>
-        </dl>
-        <div class="tool-actions">
-          <a class="btn btn-primary" href="https://wcag-translator.msschermer.us" target="_blank" rel="noopener">Translate</a>
-          <a class="btn btn-ghost" href="https://github.com/msschermer/wcag-translator" target="_blank" rel="noopener">Read the code</a>
-        </div>
-      </article>
-
-      <article class="tool rise">
-        <div class="tool-status">
-          <span class="pip code-only" aria-hidden="true"></span>
-          <span class="label">Infrastructure</span>
-        </div>
-        <h3 class="tool-name">The server this runs on</h3>
-        <p class="tool-line">
-          The deployment setup behind all the tools hosted on this environment. Version controlled, so the
-          server can be rebuilt from the repository rather than from memory.
-        </p>
-        <dl class="spec">
-          <div class="spec-row">
-            <dt>Built with</dt>
-            <dd>Docker Compose, Caddy, GitHub Actions</dd>
-          </div>
-          <div class="spec-row">
-            <dt>Runs as</dt>
-            <dd>Push to main, image builds itself, server pulls it</dd>
-          </div>
-          <div class="spec-row failure">
-            <dt>When it fails</dt>
-            <dd>Containers restart on their own, certificates renew without intervention, and no credential is ever committed</dd>
-          </div>
-        </dl>
-        <div class="tool-actions">
-          <a class="btn btn-primary" href="https://github.com/msschermer/portfolio-infra">Read the code</a>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <footer class="colophon">
-    <p>
-      Built and maintained by Mike Schermer. If you want to talk about a role or an integration
-      problem, <a href="https://www.linkedin.com/in/schermermike/">reach me on LinkedIn</a>.
-    </p>
-    <p class="label">msschermer.us</p>
-  </footer>
-
-</div>
-
-</body>
-</html>
+</body></html>
