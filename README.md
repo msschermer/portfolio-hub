@@ -30,11 +30,11 @@ Each is wrapped in the `.shot` component and links to the running tool. Featured
 
 All color, type, and spacing values are declared as custom properties in the `:root` block at the top of the stylesheet. Change them there rather than in individual rules:
 
-- **Surfaces** — two dark steps (`--ink`, `--ink-2`, `--ink-3`) and three light steps (`--paper`, `--paper-2`, `--paper-3`).
+- **Surfaces:** two dark steps (`--ink`, `--ink-2`, `--ink-3`) and three light steps (`--paper`, `--paper-2`, `--paper-3`).
 - **Text roles** are named by job, not value: `--on-dark-1/2/3`, `--on-light-1/2/3`. Check contrast when changing a text or surface color.
-- **Accent** — cool blue for links and emphasis, with a small yellow-green availability illustration.
-- **Type** — a fluid modular scale, `--fs-mono` through `--fs-4xl`.
-- **Space** — a 4px scale, `--s1` through `--s10`. Every gap and pad is a step on it.
+- **Accent:** cool blue for links and emphasis, with a small yellow-green availability illustration.
+- **Type:** a fluid modular scale, `--fs-mono` through `--fs-4xl`.
+- **Space:** a 4px scale, `--s1` through `--s10`. Every gap and pad is a step on it.
 
 Single-column grid tracks use `minmax(0,1fr)` rather than `1fr`; the latter resolves to `minmax(auto,1fr)` and lets a long child push the page wider than the viewport.
 

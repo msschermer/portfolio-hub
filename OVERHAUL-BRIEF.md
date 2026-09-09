@@ -56,7 +56,7 @@ The portfolio implementation is ready for local review. The following app-level 
 
 Publication has not been performed. The portfolio remains a standalone local HTML file with the existing nginx delivery path.
 
-## Motion pass — September 9, 2026
+## Motion pass, September 9, 2026
 
 Added a bounded motion system: coordinated hero entrances, one-time group reveals, short CRM output feedback, a monitoring-line redraw, and subtle disclosure and link feedback. The contact circle stays fixed while its arrow moves. There are no ambient loops, simulated live activity, score counters, large blur effects, or scroll listeners.
 
@@ -64,7 +64,7 @@ The content remains visible by default. Effects respect reduced motion at startu
 
 Validated the actual script with a parsed DOM adapter and simulated browser lifecycle/animation APIs: default startup, each control, repeated switching, one-time reveals, focus, disclosure open/close, reduced-motion changes, print, tab visibility, missing APIs, and anchored navigation. Browser visual testing was not performed in this pass.
 
-## Finishing pass — September 9, 2026
+## Finishing pass, September 9, 2026
 
 Matched the header monogram and favicon, eased the large-heading tracking, clarified navigation and case-study summaries, and balanced desktop project columns. Removed decorative arrows from supporting-tool headers.
 
