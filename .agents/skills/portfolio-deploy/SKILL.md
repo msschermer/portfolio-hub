@@ -168,6 +168,25 @@ you audited. Unequal means someone pushed after you, or the build for your commi
 is not the newest, and deploying `:latest` would ship something you have not
 looked at.
 
+**A digest mismatch does not imply the site changed.** The workflow runs on every
+push to `main` and moves `:latest` each time, and the resulting image gets a new
+digest even when the commit touched nothing the `Dockerfile` copies, because the
+build embeds its own timestamps and provenance. A commit that only edits
+documentation or files under `.agents/` therefore leaves the droplet's digest
+behind while what it serves is still byte-correct.
+
+So the two questions are separate, and both are worth asking:
+
+- *Is the running digest the current build?* Compare digests, as above.
+- *Is the served content current?* Hash the files in the container against the
+  working tree.
+
+Content current with a stale digest is not an outage and does not need an urgent
+deploy. It does mean the digest has stopped being a reliable record of which
+commit production corresponds to, so prefer to deploy after the last commit in a
+batch rather than in the middle of one, and finish a session with the deployed
+digest matching the head of `main`.
+
 Record the pre-deploy digest before pulling. It is the rollback point and the
 only record of what production was running:
 
