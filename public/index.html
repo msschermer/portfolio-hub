@@ -750,11 +750,23 @@ h1{font-size:clamp(3.25rem,min(6.9vw,13.2svh),8.6rem);margin:24px 0;line-height:
    the destination is already named by the link's accessible label. */
 .contact-bulb{display:block;width:42px;height:42px}
 .contact-bulb svg{display:block;width:100%;height:100%}
+/* Unlit by default: hollow glass, rays hidden. */
+.bulb-glass{fill:transparent}
+.bulb-rays{opacity:0}
+/* Lit. Amber against the blue the circle takes on hover, while the screw base
+   stays in currentColor so only the glass appears to light. Focus lights it
+   too, so the effect is not mouse-only. */
+.contact-link:is(:hover,:focus-visible) .bulb-glass{fill:#ffd76a;stroke:#ffd76a}
+.contact-link:is(:hover,:focus-visible) .bulb-rays{opacity:1;stroke:#ffd76a}
+.contact-link:is(:hover,:focus-visible) .contact-bulb{filter:drop-shadow(0 0 7px rgba(255,214,102,.68))}
 @media(prefers-reduced-motion:no-preference){
+ /* The switch-on is a state change and still happens under reduced motion;
+    only the fade between the two states is dropped. */
+ .contact-bulb,.bulb-glass,.bulb-rays{transition:fill 200ms var(--ease),stroke 200ms var(--ease),opacity 200ms var(--ease),filter 220ms var(--ease),transform 240ms var(--ease)}
  @media(hover:hover) and (pointer:fine){
   /* The shared rule nudges a contact-link arrow diagonally, which reads as
      drift on a bulb. Swap it for a small lift instead. */
-  .contact-link:hover .contact-bulb{transform:scale(1.06)}
+  .contact-link:hover .contact-bulb{transform:scale(1.05)}
  }
 }
 @media(max-width:860px){.contact-bulb{width:34px;height:34px}}
@@ -1078,7 +1090,7 @@ h1{font-size:clamp(3.25rem,min(6.9vw,13.2svh),8.6rem);margin:24px 0;line-height:
 </section>
 
 <section class="contact" id="contact" aria-labelledby="contact-title"><div class="wrap">
- <div class="contact-top"><div><span class="eyebrow">An integration to solve. A team to join.</span><h2 id="contact-title">Your next challenge.<br><em>Let&rsquo;s talk.</em></h2></div><a class="contact-link" href="https://www.linkedin.com/in/schermermike/" aria-label="Contact Mike Schermer on LinkedIn"><span class="contact-bulb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.75a6 6 0 0 0-3.7 10.72c.62.49.95 1.16.95 1.85v.43h5.5v-.43c0-.69.33-1.36.95-1.85A6 6 0 0 0 12 2.75Z"/><path d="M9.7 18.4h4.6"/><path d="M10.6 20.9h2.8"/></svg></span></a></div>
+ <div class="contact-top"><div><span class="eyebrow">An integration to solve. A team to join.</span><h2 id="contact-title">Your next challenge.<br><em>Let&rsquo;s talk.</em></h2></div><a class="contact-link" href="https://www.linkedin.com/in/schermermike/" aria-label="Contact Mike Schermer on LinkedIn"><span class="contact-bulb" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><g class="bulb-rays"><path d="M12 2.4V1"/><path d="M6.3 4.9 5.3 3.9"/><path d="M17.7 4.9l1-1"/><path d="M4.5 10.6H3.1"/><path d="M19.5 10.6h1.4"/></g><g stroke-width="1.83" transform="translate(12 12) scale(.82) translate(-12 -12)"><path class="bulb-glass" d="M12 2.75a6 6 0 0 0-3.7 10.72c.62.49.95 1.16.95 1.85v.43h5.5v-.43c0-.69.33-1.36.95-1.85A6 6 0 0 0 12 2.75Z"/><path d="M9.7 18.4h4.6"/><path d="M10.6 20.9h2.8"/></g></svg></span></a></div>
  <div class="contact-bottom">
   <p>Building a team or untangling a complicated integration? I&rsquo;d love to hear what you&rsquo;re working on.</p>
   <div class="contact-ways">
